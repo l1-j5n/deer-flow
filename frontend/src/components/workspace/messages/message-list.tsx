@@ -165,7 +165,7 @@ export function MessageList({
                   key="subtask-count"
                   className="text-muted-foreground font-norma pt-2 text-sm"
                 >
-                  {t.subtasks.executing(tasks.size)}
+                  {t("subtasks.executing", { count: String(tasks.size) })}
                 </div>,
               );
               const taskIds = message.tool_calls

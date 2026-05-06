@@ -101,7 +101,7 @@ export function ArtifactFileList({
                   ) : (
                     <PackageIcon className="size-4" />
                   )}
-                  {t.common.install}
+                  {t("common.install")}
                 </Button>
               )}
               <a
@@ -115,7 +115,7 @@ export function ArtifactFileList({
               >
                 <Button variant="ghost">
                   <DownloadIcon className="size-4" />
-                  {t.common.download}
+                  {t("common.download")}
                 </Button>
               </a>
             </CardAction>

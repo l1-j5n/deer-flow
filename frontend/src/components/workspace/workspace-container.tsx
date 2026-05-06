@@ -38,10 +38,9 @@ export function WorkspaceHeader({
   const { t } = useI18n();
   const pathname = usePathname();
   const segments = useMemo(() => {
-    const parts = pathname?.split("/") || [];
-    if (parts.length > 0) {
-      return parts.slice(1, 3);
-    }
+    if (!pathname) return [];
+    const parts = pathname.split("/");
+    return parts.slice(1, 3);
   }, [pathname]);
   return (
     <header
@@ -91,7 +90,7 @@ export function WorkspaceHeader({
         </Breadcrumb>
       </div>
       <div className="pr-4">
-        <Tooltip content={t.workspace.githubTooltip}>
+        <Tooltip content={t("workspace.githubTooltip")}>
           <a
             href="https://github.com/bytedance/deer-flow"
             target="_blank"
@@ -128,8 +127,8 @@ function nameOfSegment(
   segment: string | undefined,
   t: ReturnType<typeof useI18n>["t"],
 ) {
-  if (!segment) return t.common.home;
-  if (segment === "workspace") return t.breadcrumb.workspace;
-  if (segment === "chats") return t.breadcrumb.chats;
+  if (!segment) return t("common.home");
+  if (segment === "workspace") return t("breadcrumb.workspace");
+  if (segment === "chats") return t("breadcrumb.chats");
   return segment[0]?.toUpperCase() + segment.slice(1);
 }

@@ -54,3 +54,8 @@ web/
 # Deployment artifacts
 backend/Dockerfile.langgraph
 config.yaml.bak
+.cowork-temp/
+dist-electron/
+electron/dist/
+electron/build/
+electron/node_modules/

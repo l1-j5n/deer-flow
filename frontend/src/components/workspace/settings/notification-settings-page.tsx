@@ -22,8 +22,8 @@ export function NotificationSettingsPage() {
   };
 
   const handleTestNotification = () => {
-    showNotification(t.settings.notification.testTitle, {
-      body: t.settings.notification.testBody,
+    showNotification(t("settings.notification.testTitle"), {
+      body: t("settings.notification.testBody"),
     });
   };
 
@@ -36,11 +36,11 @@ export function NotificationSettingsPage() {
   if (!isSupported) {
     return (
       <SettingsSection
-        title={t.settings.notification.title}
-        description={t.settings.notification.description}
+        title={t("settings.notification.title")}
+        description={t("settings.notification.description")}
       >
         <p className="text-muted-foreground text-sm">
-          {t.settings.notification.notSupported}
+          {t("settings.notification.notSupported")}
         </p>
       </SettingsSection>
     );
@@ -48,10 +48,10 @@ export function NotificationSettingsPage() {
 
   return (
     <SettingsSection
-      title={t.settings.notification.title}
+      title={t("settings.notification.title")}
       description={
         <div className="flex items-center gap-2">
-          <div>{t.settings.notification.description}</div>
+          <div>{t("settings.notification.description")}</div>
           <div>
             <Switch
               disabled={permission !== "granted"}
@@ -68,13 +68,13 @@ export function NotificationSettingsPage() {
         {permission === "default" && (
           <Button onClick={handleRequestPermission} variant="default">
             <BellIcon className="mr-2 size-4" />
-            {t.settings.notification.requestPermission}
+            {t("settings.notification.requestPermission")}
           </Button>
         )}
 
         {permission === "denied" && (
           <p className="text-muted-foreground rounded-md border border-amber-200 bg-amber-50 p-3 text-sm dark:border-amber-800 dark:bg-amber-950/50">
-            {t.settings.notification.deniedHint}
+            {t("settings.notification.deniedHint")}
           </p>
         )}
 
@@ -82,7 +82,7 @@ export function NotificationSettingsPage() {
           <div className="flex flex-col gap-4">
             <Button onClick={handleTestNotification} variant="outline">
               <BellIcon className="mr-2 size-4" />
-              {t.settings.notification.testButton}
+              {t("settings.notification.testButton")}
             </Button>
           </div>
         )}

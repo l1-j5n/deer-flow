@@ -407,7 +407,7 @@ export function InputBox({
           <PromptInputTextarea
             className={cn("size-full")}
             disabled={disabled}
-            placeholder={t.inputBox.placeholder}
+            placeholder={t("inputBox.placeholder")}
             autoFocus={autoFocus}
             defaultValue={initialValue}
           />
@@ -419,7 +419,7 @@ export function InputBox({
             <PromptInputActionMenuTrigger className="px-2!" />
             <PromptInputActionMenuContent>
               <PromptInputActionAddAttachments
-                label={t.inputBox.addAttachments}
+                label={t("inputBox.addAttachments")}
               />
             </PromptInputActionMenuContent>
           </PromptInputActionMenu> */}
@@ -454,18 +454,18 @@ export function InputBox({
                       context.mode === "ultra" ? "golden-text" : "",
                     )}
                   >
-                    {(context.mode === "flash" && t.inputBox.flashMode) ||
+                    {(context.mode === "flash" && t("inputBox.flashMode")) ||
                       (context.mode === "thinking" &&
-                        t.inputBox.reasoningMode) ||
-                      (context.mode === "pro" && t.inputBox.proMode) ||
-                      (context.mode === "ultra" && t.inputBox.ultraMode)}
+                        t("inputBox.reasoningMode")) ||
+                      (context.mode === "pro" && t("inputBox.proMode")) ||
+                      (context.mode === "ultra" && t("inputBox.ultraMode"))}
                   </div>
                 </PromptInputActionMenuTrigger>
               </ModeHoverGuide>
               <PromptInputActionMenuContent className="w-80">
                 <DropdownMenuGroup>
                   <DropdownMenuLabel className="text-muted-foreground text-xs">
-                    {t.inputBox.mode}
+                    {t("inputBox.mode")}
                   </DropdownMenuLabel>
                   <PromptInputActionMenu>
                     <PromptInputActionMenuItem
@@ -485,10 +485,10 @@ export function InputBox({
                                 "text-accent-foreground",
                             )}
                           />
-                          {t.inputBox.flashMode}
+                          {t("inputBox.flashMode")}
                         </div>
                         <div className="pl-7 text-xs">
-                          {t.inputBox.flashModeDescription}
+                          {t("inputBox.flashModeDescription")}
                         </div>
                       </div>
                       {context.mode === "flash" ? (
@@ -515,10 +515,10 @@ export function InputBox({
                                   "text-accent-foreground",
                               )}
                             />
-                            {t.inputBox.reasoningMode}
+                            {t("inputBox.reasoningMode")}
                           </div>
                           <div className="pl-7 text-xs">
-                            {t.inputBox.reasoningModeDescription}
+                            {t("inputBox.reasoningModeDescription")}
                           </div>
                         </div>
                         {context.mode === "thinking" ? (
@@ -545,10 +545,10 @@ export function InputBox({
                                 "text-accent-foreground",
                             )}
                           />
-                          {t.inputBox.proMode}
+                          {t("inputBox.proMode")}
                         </div>
                         <div className="pl-7 text-xs">
-                          {t.inputBox.proModeDescription}
+                          {t("inputBox.proModeDescription")}
                         </div>
                       </div>
                       {context.mode === "pro" ? (
@@ -578,11 +578,11 @@ export function InputBox({
                               context.mode === "ultra" && "golden-text",
                             )}
                           >
-                            {t.inputBox.ultraMode}
+                            {t("inputBox.ultraMode")}
                           </div>
                         </div>
                         <div className="pl-7 text-xs">
-                          {t.inputBox.ultraModeDescription}
+                          {t("inputBox.ultraModeDescription")}
                         </div>
                       </div>
                       {context.mode === "ultra" ? (
@@ -599,21 +599,21 @@ export function InputBox({
               <PromptInputActionMenu>
                 <PromptInputActionMenuTrigger className="gap-1! px-2!">
                   <div className="text-xs font-normal">
-                    {t.inputBox.reasoningEffort}:
+                    {t("inputBox.reasoningEffort")}:
                     {context.reasoning_effort === "minimal" &&
-                      " " + t.inputBox.reasoningEffortMinimal}
+                      " " + t("inputBox.reasoningEffortMinimal")}
                     {context.reasoning_effort === "low" &&
-                      " " + t.inputBox.reasoningEffortLow}
+                      " " + t("inputBox.reasoningEffortLow")}
                     {context.reasoning_effort === "medium" &&
-                      " " + t.inputBox.reasoningEffortMedium}
+                      " " + t("inputBox.reasoningEffortMedium")}
                     {context.reasoning_effort === "high" &&
-                      " " + t.inputBox.reasoningEffortHigh}
+                      " " + t("inputBox.reasoningEffortHigh")}
                   </div>
                 </PromptInputActionMenuTrigger>
                 <PromptInputActionMenuContent className="w-70">
                   <DropdownMenuGroup>
                     <DropdownMenuLabel className="text-muted-foreground text-xs">
-                      {t.inputBox.reasoningEffort}
+                      {t("inputBox.reasoningEffort")}
                     </DropdownMenuLabel>
                     <PromptInputActionMenu>
                       <PromptInputActionMenuItem
@@ -626,10 +626,10 @@ export function InputBox({
                       >
                         <div className="flex flex-col gap-2">
                           <div className="flex items-center gap-1 font-bold">
-                            {t.inputBox.reasoningEffortMinimal}
+                            {t("inputBox.reasoningEffortMinimal")}
                           </div>
                           <div className="pl-2 text-xs">
-                            {t.inputBox.reasoningEffortMinimalDescription}
+                            {t("inputBox.reasoningEffortMinimalDescription")}
                           </div>
                         </div>
                         {context.reasoning_effort === "minimal" ? (
@@ -648,10 +648,10 @@ export function InputBox({
                       >
                         <div className="flex flex-col gap-2">
                           <div className="flex items-center gap-1 font-bold">
-                            {t.inputBox.reasoningEffortLow}
+                            {t("inputBox.reasoningEffortLow")}
                           </div>
                           <div className="pl-2 text-xs">
-                            {t.inputBox.reasoningEffortLowDescription}
+                            {t("inputBox.reasoningEffortLowDescription")}
                           </div>
                         </div>
                         {context.reasoning_effort === "low" ? (
@@ -671,10 +671,10 @@ export function InputBox({
                       >
                         <div className="flex flex-col gap-2">
                           <div className="flex items-center gap-1 font-bold">
-                            {t.inputBox.reasoningEffortMedium}
+                            {t("inputBox.reasoningEffortMedium")}
                           </div>
                           <div className="pl-2 text-xs">
-                            {t.inputBox.reasoningEffortMediumDescription}
+                            {t("inputBox.reasoningEffortMediumDescription")}
                           </div>
                         </div>
                         {context.reasoning_effort === "medium" ||
@@ -694,10 +694,10 @@ export function InputBox({
                       >
                         <div className="flex flex-col gap-2">
                           <div className="flex items-center gap-1 font-bold">
-                            {t.inputBox.reasoningEffortHigh}
+                            {t("inputBox.reasoningEffortHigh")}
                           </div>
                           <div className="pl-2 text-xs">
-                            {t.inputBox.reasoningEffortHighDescription}
+                            {t("inputBox.reasoningEffortHighDescription")}
                           </div>
                         </div>
                         {context.reasoning_effort === "high" ? (
@@ -727,7 +727,7 @@ export function InputBox({
                 </PromptInputButton>
               </ModelSelectorTrigger>
               <ModelSelectorContent>
-                <ModelSelectorInput placeholder={t.inputBox.searchModels} />
+                <ModelSelectorInput placeholder={t("inputBox.searchModels")} />
                 <ModelSelectorList>
                   {models.map((m) => (
                     <ModelSelectorItem
@@ -777,7 +777,7 @@ export function InputBox({
             <div className="flex items-center gap-2">
               {followupsLoading ? (
                 <div className="text-muted-foreground bg-background/80 rounded-full border px-4 py-2 text-xs backdrop-blur-sm">
-                  {t.inputBox.followupLoading}
+                  {t("inputBox.followupLoading")}
                 </div>
               ) : (
                 <Suggestions className="min-h-16 w-fit items-start">
@@ -789,7 +789,7 @@ export function InputBox({
                     />
                   ))}
                   <Button
-                    aria-label={t.common.close}
+                    aria-label={t("common.close")}
                     className="text-muted-foreground cursor-pointer rounded-full px-3 text-xs font-normal"
                     variant="outline"
                     size="sm"
@@ -807,20 +807,20 @@ export function InputBox({
       <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{t.inputBox.followupConfirmTitle}</DialogTitle>
+            <DialogTitle>{t("inputBox.followupConfirmTitle")}</DialogTitle>
             <DialogDescription>
-              {t.inputBox.followupConfirmDescription}
+              {t("inputBox.followupConfirmDescription")}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setConfirmOpen(false)}>
-              {t.common.cancel}
+              {t("common.cancel")}
             </Button>
             <Button variant="secondary" onClick={confirmAppendAndSend}>
-              {t.inputBox.followupConfirmAppend}
+              {t("inputBox.followupConfirmAppend")}
             </Button>
             <Button onClick={confirmReplaceAndSend}>
-              {t.inputBox.followupConfirmReplace}
+              {t("inputBox.followupConfirmReplace")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -858,9 +858,9 @@ function SuggestionList() {
         className="text-muted-foreground cursor-pointer rounded-full px-4 text-xs font-normal"
         variant="outline"
         size="sm"
-        onClick={() => handleSuggestionClick(t.inputBox.surpriseMePrompt)}
+        onClick={() => handleSuggestionClick(t("inputBox.surpriseMePrompt"))}
       >
-        <SparklesIcon className="size-4" /> {t.inputBox.surpriseMe}
+        <SparklesIcon className="size-4" /> {t("inputBox.surpriseMe")}
       </ConfettiButton>
       {t.inputBox.suggestions.map((suggestion) => (
         <Suggestion
@@ -872,7 +872,7 @@ function SuggestionList() {
       ))}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Suggestion icon={PlusIcon} suggestion={t.common.create} />
+          <Suggestion icon={PlusIcon} suggestion={t("common.create")} />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
           <DropdownMenuGroup>
@@ -902,7 +902,7 @@ function AddAttachmentsButton({ className }: { className?: string }) {
   const { t } = useI18n();
   const attachments = usePromptInputAttachments();
   return (
-    <Tooltip content={t.inputBox.addAttachments}>
+    <Tooltip content={t("inputBox.addAttachments")}>
       <PromptInputButton
         className={cn("px-2!", className)}
         onClick={() => attachments.openFileDialog()}

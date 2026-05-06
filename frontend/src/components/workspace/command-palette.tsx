@@ -73,23 +73,23 @@ export function CommandPalette() {
     <>
       <SettingsDialog open={settingsOpen} onOpenChange={setSettingsOpen} />
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder={t.shortcuts.searchActions} />
+        <CommandInput placeholder={t("shortcuts.searchActions")} />
         <CommandList>
-          <CommandEmpty>{t.shortcuts.noResults}</CommandEmpty>
-          <CommandGroup heading={t.shortcuts.actions}>
+          <CommandEmpty>{t("shortcuts.noResults")}</CommandEmpty>
+          <CommandGroup heading={t("shortcuts.actions")}>
             <CommandItem onSelect={handleNewChat}>
               <MessageSquarePlusIcon className="mr-2 h-4 w-4" />
-              {t.sidebar.newChat}
+              {t("sidebar.newChat")}
               <CommandShortcut>{metaKey}{shiftKey}N</CommandShortcut>
             </CommandItem>
             <CommandItem onSelect={handleOpenSettings}>
               <SettingsIcon className="mr-2 h-4 w-4" />
-              {t.common.settings}
+              {t("common.settings")}
               <CommandShortcut>{metaKey},</CommandShortcut>
             </CommandItem>
             <CommandItem onSelect={handleShowShortcuts}>
               <KeyboardIcon className="mr-2 h-4 w-4" />
-              {t.shortcuts.keyboardShortcuts}
+              {t("shortcuts.keyboardShortcuts")}
               <CommandShortcut>{metaKey}/</CommandShortcut>
             </CommandItem>
           </CommandGroup>
@@ -99,20 +99,20 @@ export function CommandPalette() {
       <Dialog open={shortcutsOpen} onOpenChange={setShortcutsOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>{t.shortcuts.keyboardShortcuts}</DialogTitle>
+            <DialogTitle>{t("shortcuts.keyboardShortcuts")}</DialogTitle>
             <DialogDescription>
-              {t.shortcuts.keyboardShortcutsDescription}
+              {t("shortcuts.keyboardShortcutsDescription")}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3 text-sm">
             {[
-              { keys: `${metaKey}K`, label: t.shortcuts.openCommandPalette },
-              { keys: `${metaKey}${shiftKey}N`, label: t.sidebar.newChat },
-              { keys: `${metaKey}B`, label: t.shortcuts.toggleSidebar },
-              { keys: `${metaKey},`, label: t.common.settings },
+              { keys: `${metaKey}K`, label: t("shortcuts.openCommandPalette") },
+              { keys: `${metaKey}${shiftKey}N`, label: t("sidebar.newChat") },
+              { keys: `${metaKey}B`, label: t("shortcuts.toggleSidebar") },
+              { keys: `${metaKey},`, label: t("common.settings") },
               {
                 keys: `${metaKey}/`,
-                label: t.shortcuts.keyboardShortcuts,
+                label: t("shortcuts.keyboardShortcuts"),
               },
             ].map(({ keys, label }) => (
               <div key={keys} className="flex items-center justify-between">

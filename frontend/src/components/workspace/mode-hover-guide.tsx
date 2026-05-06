@@ -54,8 +54,8 @@ export function ModeHoverGuide({
   showTitle?: boolean;
 }) {
   const { t } = useI18n();
-  const label = t.inputBox[getModeLabelKey(mode)];
-  const description = t.inputBox[getModeDescriptionKey(mode)];
+  const label = t(`inputBox.${getModeLabelKey(mode)}`);
+  const description = t(`inputBox.${getModeDescriptionKey(mode)}`);
   const content = showTitle ? `${label}: ${description}` : description;
 
   return <Tooltip content={content}>{children}</Tooltip>;

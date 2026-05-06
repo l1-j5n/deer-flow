@@ -56,30 +56,30 @@ export function SettingsDialog(props: SettingsDialogProps) {
     () => [
       {
         id: "appearance",
-        label: t.settings.sections.appearance,
+        label: t("settings.sections.appearance"),
         icon: PaletteIcon,
       },
       {
         id: "notification",
-        label: t.settings.sections.notification,
+        label: t("settings.sections.notification"),
         icon: BellIcon,
       },
       {
         id: "memory",
-        label: t.settings.sections.memory,
+        label: t("settings.sections.memory"),
         icon: BrainIcon,
       },
-      { id: "tools", label: t.settings.sections.tools, icon: WrenchIcon },
-      { id: "skills", label: t.settings.sections.skills, icon: SparklesIcon },
-      { id: "about", label: t.settings.sections.about, icon: InfoIcon },
+      { id: "tools", label: t("settings.sections.tools"), icon: WrenchIcon },
+      { id: "skills", label: t("settings.sections.skills"), icon: SparklesIcon },
+      { id: "about", label: t("settings.sections.about"), icon: InfoIcon },
     ],
     [
-      t.settings.sections.appearance,
-      t.settings.sections.memory,
-      t.settings.sections.tools,
-      t.settings.sections.skills,
-      t.settings.sections.notification,
-      t.settings.sections.about,
+      t("settings.sections.appearance"),
+      t("settings.sections.memory"),
+      t("settings.sections.tools"),
+      t("settings.sections.skills"),
+      t("settings.sections.notification"),
+      t("settings.sections.about"),
     ],
   );
   return (
@@ -92,9 +92,9 @@ export function SettingsDialog(props: SettingsDialogProps) {
         aria-describedby={undefined}
       >
         <DialogHeader className="gap-1">
-          <DialogTitle>{t.settings.title}</DialogTitle>
+          <DialogTitle>{t("settings.title")}</DialogTitle>
           <p className="text-muted-foreground text-sm">
-            {t.settings.description}
+            {t("settings.description")}
           </p>
         </DialogHeader>
         <div className="grid min-h-0 flex-1 gap-4 md:grid-cols-[220px_1fr]">

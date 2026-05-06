@@ -1,3 +1,34 @@
-from . import artifacts, mcp, models, skills, suggestions, threads, uploads
+from . import agents, alerts, artifacts, audit, backup, channels, collaboration, conversation_memory, health, knowledge_base, knowledge_graph, marketplace, mcp, memory, models, notifications, performance, plugins, realtime, reasoning, scheduler, security, settings_workspace, sharing, skills, shortcuts, suggestions, threads, tools, uploads, ws, theme
 
-__all__ = ["artifacts", "mcp", "models", "skills", "suggestions", "threads", "uploads"]
+__all__ = [
+    "agents",
+    "alerts",
+    "artifacts",
+    "audit",
+    "backup",
+    "channels",
+    "collaboration",
+    "conversation_memory",
+    "health",
+    "knowledge_base",
+    "knowledge_graph",
+    "marketplace",
+    "mcp",
+    "memory",
+    "models",
+    "notifications",
+    "performance",
+    "plugins",
+    "realtime",
+    "reasoning",
+    "scheduler",
+    "security",
+    "settings_workspace",
+    "sharing",
+    "skills",
+    "suggestions",
+    "threads",
+    "tools",
+    "uploads",
+    "ws",
+]

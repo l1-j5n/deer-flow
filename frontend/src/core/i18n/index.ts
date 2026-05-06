@@ -1,5 +1,9 @@
 export { enUS } from "./locales/en-US";
 export { zhCN } from "./locales/zh-CN";
+export { jaJP } from "./locales/ja-JP";
+export { koKR } from "./locales/ko-KR";
+export { deDE } from "./locales/de-DE";
+export { frFR } from "./locales/fr-FR";
 export type { Translations } from "./locales/types";
 export {
   DEFAULT_LOCALE,

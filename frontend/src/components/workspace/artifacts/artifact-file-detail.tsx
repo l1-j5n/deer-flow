@@ -174,11 +174,11 @@ export function ArtifactFileDetail({
         <div className="flex items-center gap-2">
           <ArtifactActions>
             {!isWriteFile && filepath.endsWith(".skill") && (
-              <Tooltip content={t.toolCalls.skillInstallTooltip}>
+              <Tooltip content={t("toolCalls.skillInstallTooltip")}>
                 <ArtifactAction
                   icon={isInstalling ? LoaderIcon : PackageIcon}
-                  label={t.common.install}
-                  tooltip={t.common.install}
+                  label={t("common.install")}
+                  tooltip={t("common.install")}
                   disabled={
                     isInstalling ||
                     env.NEXT_PUBLIC_STATIC_WEBSITE_ONLY === "true"
@@ -191,26 +191,26 @@ export function ArtifactFileDetail({
               <a href={urlOfArtifact({ filepath, threadId })} target="_blank">
                 <ArtifactAction
                   icon={SquareArrowOutUpRightIcon}
-                  label={t.common.openInNewWindow}
-                  tooltip={t.common.openInNewWindow}
+                  label={t("common.openInNewWindow")}
+                  tooltip={t("common.openInNewWindow")}
                 />
               </a>
             )}
             {isCodeFile && (
               <ArtifactAction
                 icon={CopyIcon}
-                label={t.clipboard.copyToClipboard}
+                label={t("clipboard.copyToClipboard")}
                 disabled={!content}
                 onClick={async () => {
                   try {
                     await navigator.clipboard.writeText(displayContent ?? "");
-                    toast.success(t.clipboard.copiedToClipboard);
+                    toast.success(t("clipboard.copiedToClipboard"));
                   } catch (error) {
                     toast.error("Failed to copy to clipboard");
                     console.error(error);
                   }
                 }}
-                tooltip={t.clipboard.copyToClipboard}
+                tooltip={t("clipboard.copyToClipboard")}
               />
             )}
             {!isWriteFile && (
@@ -220,16 +220,16 @@ export function ArtifactFileDetail({
               >
                 <ArtifactAction
                   icon={DownloadIcon}
-                  label={t.common.download}
-                  tooltip={t.common.download}
+                  label={t("common.download")}
+                  tooltip={t("common.download")}
                 />
               </a>
             )}
             <ArtifactAction
               icon={XIcon}
-              label={t.common.close}
+              label={t("common.close")}
               onClick={() => setOpen(false)}
-              tooltip={t.common.close}
+              tooltip={t("common.close")}
             />
           </ArtifactActions>
         </div>

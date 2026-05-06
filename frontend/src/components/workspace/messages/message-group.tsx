@@ -93,8 +93,8 @@ export function MessageGroup({
             label={
               <span className="opacity-60">
                 {showAbove
-                  ? t.toolCalls.lessSteps
-                  : t.toolCalls.moreSteps(aboveLastToolCallSteps.length)}
+                  ? t("toolCalls.lessSteps")
+                  : t("toolCalls.moreSteps", { count: String(aboveLastToolCallSteps.length) })}
               </span>
             }
             icon={
@@ -150,7 +150,7 @@ export function MessageGroup({
             <div className="flex w-full items-center justify-between">
               <ChainOfThoughtStep
                 className="font-normal"
-                label={t.common.thinking}
+                label={t("common.thinking")}
                 icon={LightbulbIcon}
               ></ChainOfThoughtStep>
               <div>
@@ -205,9 +205,9 @@ function ToolCall({
     useArtifacts();
 
   if (name === "web_search") {
-    let label: React.ReactNode = t.toolCalls.searchForRelatedInfo;
+    let label: React.ReactNode = t("toolCalls.searchForRelatedInfo");
     if (typeof args.query === "string") {
-      label = t.toolCalls.searchOnWebFor(args.query);
+      label = t("toolCalls.searchOnWebFor", { query: String(args.query) });
     }
     return (
       <ChainOfThoughtStep key={id} label={label} icon={SearchIcon}>
@@ -225,9 +225,9 @@ function ToolCall({
       </ChainOfThoughtStep>
     );
   } else if (name === "image_search") {
-    let label: React.ReactNode = t.toolCalls.searchForRelatedImages;
+    let label: React.ReactNode = t("toolCalls.searchForRelatedImages");
     if (typeof args.query === "string") {
-      label = t.toolCalls.searchForRelatedImagesFor(args.query);
+      label = t("toolCalls.searchForRelatedImagesFor", { query: String(args.query) });
     }
     const results = (
       result as {
@@ -281,7 +281,7 @@ function ToolCall({
       <ChainOfThoughtStep
         key={id}
         className="cursor-pointer"
-        label={t.toolCalls.viewWebPage}
+        label={t("toolCalls.viewWebPage")}
         icon={GlobeIcon}
         onClick={() => {
           window.open(url, "_blank");
@@ -300,7 +300,7 @@ function ToolCall({
     let description: string | undefined = (args as { description: string })
       ?.description;
     if (!description) {
-      description = t.toolCalls.listFolder;
+      description = t("toolCalls.listFolder");
     }
     const path: string | undefined = (args as { path: string })?.path;
     return (
@@ -316,7 +316,7 @@ function ToolCall({
     let description: string | undefined = (args as { description: string })
       ?.description;
     if (!description) {
-      description = t.toolCalls.readFile;
+      description = t("toolCalls.readFile");
     }
     const { path } = args as { path: string; content: string };
     return (
@@ -332,7 +332,7 @@ function ToolCall({
     let description: string | undefined = (args as { description: string })
       ?.description;
     if (!description) {
-      description = t.toolCalls.writeFile;
+      description = t("toolCalls.writeFile");
     }
     const path: string | undefined = (args as { path: string })?.path;
     if (isLoading && isLast && autoOpen && autoSelect && path) {
@@ -374,7 +374,7 @@ function ToolCall({
     const description: string | undefined = (args as { description: string })
       ?.description;
     if (!description) {
-      return t.toolCalls.executeCommand;
+      return t("toolCalls.executeCommand");
     }
     const command: string | undefined = (args as { command: string })?.command;
     return (
@@ -397,7 +397,7 @@ function ToolCall({
     return (
       <ChainOfThoughtStep
         key={id}
-        label={t.toolCalls.needYourHelp}
+        label={t("toolCalls.needYourHelp")}
         icon={MessageCircleQuestionMarkIcon}
       ></ChainOfThoughtStep>
     );
@@ -405,7 +405,7 @@ function ToolCall({
     return (
       <ChainOfThoughtStep
         key={id}
-        label={t.toolCalls.writeTodos}
+        label={t("toolCalls.writeTodos")}
         icon={ListTodoIcon}
       ></ChainOfThoughtStep>
     );
@@ -415,7 +415,7 @@ function ToolCall({
     return (
       <ChainOfThoughtStep
         key={id}
-        label={description ?? t.toolCalls.useTool(name)}
+        label={description ?? t("toolCalls.useTool", { toolName: String(name) })}
         icon={WrenchIcon}
       ></ChainOfThoughtStep>
     );

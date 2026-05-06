@@ -20,7 +20,7 @@ export function CopyButton({
     setTimeout(() => setCopied(false), 2000);
   }, [clipboardData]);
   return (
-    <Tooltip content={t.clipboard.copyToClipboard}>
+    <Tooltip content={t("clipboard.copyToClipboard")}>
       <Button
         size="icon-sm"
         type="button"

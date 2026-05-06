@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, type ReactNode } from "react";
 
+import { DEFAULT_LOCALE } from "@/core/i18n";
 import type { Locale } from "@/core/i18n";
 
 export interface I18nContextType {
@@ -9,7 +10,10 @@ export interface I18nContextType {
   setLocale: (locale: Locale) => void;
 }
 
-export const I18nContext = createContext<I18nContextType | null>(null);
+export const I18nContext = createContext<I18nContextType>({
+  locale: DEFAULT_LOCALE,
+  setLocale: () => {},
+});
 
 export function I18nProvider({
   children,
@@ -33,9 +37,5 @@ export function I18nProvider({
 }
 
 export function useI18nContext() {
-  const context = useContext(I18nContext);
-  if (!context) {
-    throw new Error("useI18n must be used within I18nProvider");
-  }
-  return context;
+  return useContext(I18nContext);
 }

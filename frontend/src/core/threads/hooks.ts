@@ -2,7 +2,7 @@ import type { AIMessage, Message } from "@langchain/langgraph-sdk";
 import type { ThreadsClient } from "@langchain/langgraph-sdk/client";
 import { useStream } from "@langchain/langgraph-sdk/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import type { PromptInputMessage } from "@/components/ai-elements/prompt-input";
@@ -239,7 +239,7 @@ export function useThreadStream({
         newOptimistic.push({
           type: "ai",
           id: `opt-ai-${Date.now()}`,
-          content: t.uploads.uploadingFiles,
+          content: t("uploads.uploadingFiles"),
           additional_kwargs: { element: "task" },
         });
       }
@@ -395,7 +395,7 @@ export function useThreadStream({
         sendInFlightRef.current = false;
       }
     },
-    [thread, _handleOnStart, t.uploads.uploadingFiles, context, queryClient],
+    [thread, _handleOnStart, t("uploads.uploadingFiles"), context, queryClient],
   );
 
   // Merge thread with optimistic messages for display
@@ -555,4 +555,31 @@ export function useRenameThread() {
       );
     },
   });
+}
+
+/**
+ * Filter threads that belong to a specific agent.
+ * Threads store agent_name in their context (AgentThreadContext).
+ * We search all threads and filter client-side since LangGraph SDK
+ * doesn't support metadata filtering on agent_name directly.
+ */
+export function useAgentThreads(agentName: string | null | undefined) {
+  const { data: allThreads, isLoading, error } = useThreads({
+    limit: 200,
+    sortBy: "updated_at",
+    sortOrder: "desc",
+    select: ["thread_id", "updated_at", "values", "metadata"],
+  });
+
+  const threads = useMemo(() => {
+    if (!allThreads || !agentName) return [];
+    return allThreads.filter((t) => {
+      // Check metadata first, then fall back to values context
+      const metaAgent = t.metadata?.agent_name as string | undefined;
+      const valuesAgent = t.values?.agent_name as string | undefined;
+      return metaAgent === agentName || valuesAgent === agentName;
+    });
+  }, [allThreads, agentName]);
+
+  return { threads, isLoading, error };
 }

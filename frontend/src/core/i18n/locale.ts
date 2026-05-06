@@ -1,4 +1,4 @@
-export const SUPPORTED_LOCALES = ["en-US", "zh-CN"] as const;
+export const SUPPORTED_LOCALES = ["en-US", "zh-CN", "ja-JP", "ko-KR", "de-DE", "fr-FR"] as const;
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = "en-US";
 
@@ -15,9 +15,12 @@ export function normalizeLocale(locale: string | null | undefined): Locale {
     return locale;
   }
 
-  if (locale.toLowerCase().startsWith("zh")) {
-    return "zh-CN";
-  }
+  const lower = locale.toLowerCase();
+  if (lower.startsWith("zh")) return "zh-CN";
+  if (lower.startsWith("ja")) return "ja-JP";
+  if (lower.startsWith("ko")) return "ko-KR";
+  if (lower.startsWith("de")) return "de-DE";
+  if (lower.startsWith("fr")) return "fr-FR";
 
   return DEFAULT_LOCALE;
 }

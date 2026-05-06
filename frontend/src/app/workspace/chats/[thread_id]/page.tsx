@@ -144,7 +144,7 @@ export default function ChatPage() {
                 />
                 {env.NEXT_PUBLIC_STATIC_WEBSITE_ONLY === "true" && (
                   <div className="text-muted-foreground/67 w-full translate-y-12 text-center text-xs">
-                    {t.common.notAvailableInDemoMode}
+                    {t("common.notAvailableInDemoMode")}
                   </div>
                 )}
               </div>

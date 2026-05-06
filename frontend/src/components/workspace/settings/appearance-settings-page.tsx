@@ -32,38 +32,38 @@ export function AppearanceSettingsPage() {
     () => [
       {
         id: "system",
-        label: t.settings.appearance.system,
-        description: t.settings.appearance.systemDescription,
+        label: t("settings.appearance.system"),
+        description: t("settings.appearance.systemDescription"),
         icon: MonitorSmartphoneIcon,
       },
       {
         id: "light",
-        label: t.settings.appearance.light,
-        description: t.settings.appearance.lightDescription,
+        label: t("settings.appearance.light"),
+        description: t("settings.appearance.lightDescription"),
         icon: SunIcon,
       },
       {
         id: "dark",
-        label: t.settings.appearance.dark,
-        description: t.settings.appearance.darkDescription,
+        label: t("settings.appearance.dark"),
+        description: t("settings.appearance.darkDescription"),
         icon: MoonIcon,
       },
     ],
     [
-      t.settings.appearance.dark,
-      t.settings.appearance.darkDescription,
-      t.settings.appearance.light,
-      t.settings.appearance.lightDescription,
-      t.settings.appearance.system,
-      t.settings.appearance.systemDescription,
+      t("settings.appearance.dark"),
+      t("settings.appearance.darkDescription"),
+      t("settings.appearance.light"),
+      t("settings.appearance.lightDescription"),
+      t("settings.appearance.system"),
+      t("settings.appearance.systemDescription"),
     ],
   );
 
   return (
     <div className="space-y-8">
       <SettingsSection
-        title={t.settings.appearance.themeTitle}
-        description={t.settings.appearance.themeDescription}
+        title={t("settings.appearance.themeTitle")}
+        description={t("settings.appearance.themeDescription")}
       >
         <div className="grid gap-3 lg:grid-cols-3">
           {themeOptions.map((option) => (
@@ -84,8 +84,8 @@ export function AppearanceSettingsPage() {
       <Separator />
 
       <SettingsSection
-        title={t.settings.appearance.languageTitle}
-        description={t.settings.appearance.languageDescription}
+        title={t("settings.appearance.languageTitle")}
+        description={t("settings.appearance.languageDescription")}
       >
         <Select
           value={locale}

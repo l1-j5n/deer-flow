@@ -330,7 +330,7 @@ function RichFileCard({
             {getFileTypeLabel(file.filename)}
           </Badge>
           <span className="text-muted-foreground text-[10px]">
-            {t.uploads.uploading}
+            {t("uploads.uploading")}
           </span>
         </div>
       </div>

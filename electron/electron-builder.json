@@ -1,0 +1,157 @@
+{
+  "appId": "com.deerflow.electron",
+  "productName": "DeerFlow Agent Platform",
+  "copyright": "Copyright © 2026 DeerFlow",
+  "directories": {
+    "output": "release",
+    "buildResources": "resources"
+  },
+  "files": [
+    "dist/**/*",
+    "package.json",
+    "resources/**/*"
+  ],
+  "extraResources": [
+    {
+      "from": "../backend",
+      "to": "backend",
+      "filter": [
+        "**/*",
+        "!**/.venv/**",
+        "!**/__pycache__/**",
+        "!**/.pytest_cache/**",
+        "!**/node_modules/**",
+        "!**/.git/**"
+      ]
+    },
+    {
+      "from": "../frontend",
+      "to": "frontend",
+      "filter": [
+        "**/*",
+        "!**/node_modules/**",
+        "!**/.next/**",
+        "!**/.git/**"
+      ]
+    },
+    {
+      "from": "../config.yaml",
+      "to": "config.yaml"
+    },
+    {
+      "from": "../.env",
+      "to": ".env"
+    },
+    {
+      "from": "../extensions_config.json",
+      "to": "extensions_config.json"
+    },
+    {
+      "from": "../skills",
+      "to": "skills",
+      "filter": [
+        "**/*",
+        "!**/.git/**"
+      ]
+    }
+  ],
+  "asarUnpack": [
+    "dist/services.js",
+    "dist/proxy.js"
+  ],
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      },
+      {
+        "target": "portable",
+        "arch": ["x64"]
+      }
+    ],
+    "icon": "resources/icon.ico",
+    "publisherName": "DeerFlow",
+    "certificateFile": "",
+    "certificatePassword": "",
+    "verifyUpdateCodeSignature": false,
+    "signingHashAlgorithms": ["sha256"],
+    "rfc3161TimeStampServer": "http://timestamp.digicert.com"
+  },
+  "mac": {
+    "target": [
+      {
+        "target": "dmg",
+        "arch": ["x64", "arm64"]
+      },
+      {
+        "target": "zip",
+        "arch": ["x64", "arm64"]
+      }
+    ],
+    "icon": "resources/icon.icns",
+    "category": "public.app-category.productivity",
+    "hardenedRuntime": true,
+    "gatekeeperAssess": false,
+    "entitlements": "build/entitlements.mac.plist",
+    "entitlementsInherit": "build/entitlements.mac.inherit.plist",
+    "notarize": {
+      "teamId": ""
+    }
+  },
+  "linux": {
+    "target": [
+      {
+        "target": "AppImage",
+        "arch": ["x64"]
+      },
+      {
+        "target": "deb",
+        "arch": ["x64"]
+      }
+    ],
+    "icon": "resources/icon.png",
+    "category": "Office",
+    "maintainer": "DeerFlow Team",
+    "vendor": "DeerFlow"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "DeerFlow",
+    "include": "build/installer.nsh",
+    "license": "build/license.rtf",
+    "installerIcon": "resources/icon.ico",
+    "uninstallerIcon": "resources/icon.ico",
+    "installerHeaderIcon": "resources/icon.ico",
+    "artifactName": "DeerFlow-${version}-Setup.${ext}"
+  },
+  "dmg": {
+    "title": "DeerFlow Agent Platform",
+    "artifactName": "DeerFlow-${version}-${arch}.${ext}",
+    "contents": [
+      {
+        "x": 130,
+        "y": 220
+      },
+      {
+        "x": 410,
+        "y": 220,
+        "type": "link",
+        "path": "/Applications"
+      }
+    ],
+    "window": {
+      "width": 540,
+      "height": 380
+    }
+  },
+  "publish": {
+    "provider": "github",
+    "owner": "bytedance",
+    "repo": "deer-flow",
+    "releaseType": "release"
+  }
+}

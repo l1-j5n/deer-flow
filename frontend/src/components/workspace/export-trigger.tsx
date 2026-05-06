@@ -30,7 +30,7 @@ export function ExportTrigger({ threadId }: { threadId: string }) {
   const handleExport = useCallback(
     (format: "markdown" | "json") => {
       if (messages.length === 0) {
-        toast.error(t.conversation.noMessages);
+        toast.error(t("conversation.noMessages"));
         return;
       }
       const agentThread = {
@@ -44,7 +44,7 @@ export function ExportTrigger({ threadId }: { threadId: string }) {
       } else {
         exportThreadAsJSON(agentThread, messages);
       }
-      toast.success(t.common.exportSuccess);
+      toast.success(t("common.exportSuccess"));
     },
     [messages, thread.values, threadId, t],
   );
@@ -55,25 +55,25 @@ export function ExportTrigger({ threadId }: { threadId: string }) {
 
   return (
     <DropdownMenu>
-      <Tooltip content={t.common.export}>
+      <Tooltip content={t("common.export")}>
         <DropdownMenuTrigger asChild>
           <Button
             className="text-muted-foreground hover:text-foreground"
             variant="ghost"
           >
             <Download />
-            {t.common.export}
+            {t("common.export")}
           </Button>
         </DropdownMenuTrigger>
       </Tooltip>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onSelect={() => handleExport("markdown")}>
           <FileText className="text-muted-foreground" />
-          <span>{t.common.exportAsMarkdown}</span>
+          <span>{t("common.exportAsMarkdown")}</span>
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => handleExport("json")}>
           <FileJson className="text-muted-foreground" />
-          <span>{t.common.exportAsJSON}</span>
+          <span>{t("common.exportAsJSON")}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

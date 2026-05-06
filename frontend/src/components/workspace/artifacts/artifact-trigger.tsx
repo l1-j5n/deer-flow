@@ -23,7 +23,7 @@ export const ArtifactTrigger = () => {
         }}
       >
         <FilesIcon />
-        {t.common.artifacts}
+        {t("common.artifacts")}
       </Button>
     </Tooltip>
   );

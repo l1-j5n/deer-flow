@@ -16,8 +16,8 @@ export function useSpecificChatMode() {
     if (threadIdFromPath !== "new" || searchParams.get("mode") !== "skill") {
       return undefined;
     }
-    return t.inputBox.createSkillPrompt;
-  }, [threadIdFromPath, searchParams, t.inputBox.createSkillPrompt]);
+    return t("inputBox.createSkillPrompt");
+  }, [threadIdFromPath, searchParams, t("inputBox.createSkillPrompt")]);
   const lastInitialValueRef = useRef<string | undefined>(undefined);
   const setInputRef = useRef(promptInputController.textInput.setInput);
   setInputRef.current = promptInputController.textInput.setInput;

@@ -77,6 +77,26 @@ def _normalize_custom_agent_name(raw_value: str) -> str:
     return normalized
 
 
+def _record_langgraph_timing(agent_name: str, elapsed_ms: int) -> None:
+    """Record a LangGraph processing-time sample in the Gateway TimingStore.
+
+    Called from both ``_handle_chat`` (non-streaming) and
+    ``_handle_streaming_chat`` (streaming) after each LangGraph invocation.
+
+    Since the channel service runs inside the Gateway process, this function
+    calls the in-memory TimingStore directly — no HTTP roundtrip needed.
+    """
+    try:
+        from app.gateway.timing import get_timing_store
+
+        store = get_timing_store()
+        # Schedule the async record without awaiting it — non-blocking
+        import asyncio as _asyncio
+        _asyncio.ensure_future(store.record_langgraph(agent_name, elapsed_ms))
+    except Exception:
+        logger.debug("Failed to record LangGraph timing for %r", agent_name, exc_info=True)
+
+
 def _extract_response_text(result: dict | list) -> str:
     """Extract the last AI message text from a LangGraph runs.wait result.
 
@@ -552,6 +572,7 @@ class ChannelManager:
             return
 
         logger.info("[Manager] invoking runs.wait(thread_id=%s, text=%r)", thread_id, msg.text[:100])
+        t_start = time.monotonic()
         result = await client.runs.wait(
             thread_id,
             assistant_id,
@@ -559,6 +580,8 @@ class ChannelManager:
             config=run_config,
             context=run_context,
         )
+        elapsed_ms = int((time.monotonic() - t_start) * 1000)
+        _record_langgraph_timing(run_context.get("agent_name", assistant_id), elapsed_ms)
 
         response_text = _extract_response_text(result)
         artifacts = _extract_artifacts(result)
@@ -609,6 +632,7 @@ class ChannelManager:
         last_publish_at = 0.0
         stream_error: BaseException | None = None
 
+        t_stream_start = time.monotonic()
         try:
             async for chunk in client.runs.stream(
                 thread_id,
@@ -658,6 +682,9 @@ class ChannelManager:
             else:
                 logger.exception("[Manager] streaming error: thread_id=%s", thread_id)
         finally:
+            stream_elapsed_ms = int((time.monotonic() - t_stream_start) * 1000)
+            _record_langgraph_timing(run_context.get("agent_name", assistant_id), stream_elapsed_ms)
+
             result = last_values if last_values is not None else {"messages": [{"type": "ai", "content": latest_text}]}
             response_text = _extract_response_text(result)
             artifacts = _extract_artifacts(result)
@@ -675,11 +702,12 @@ class ChannelManager:
                     response_text = latest_text or "(No response from agent)"
 
             logger.info(
-                "[Manager] streaming response completed: thread_id=%s, response_len=%d, artifacts=%d, error=%s",
+                "[Manager] streaming response completed: thread_id=%s, response_len=%d, artifacts=%d, error=%s, lg_ms=%d",
                 thread_id,
                 len(response_text),
                 len(artifacts),
                 stream_error,
+                stream_elapsed_ms,
             )
             await self.bus.publish_outbound(
                 OutboundMessage(

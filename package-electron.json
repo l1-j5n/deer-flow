@@ -1,0 +1,14 @@
+{
+  "name": "deer-flow-electron",
+  "version": "0.1.0",
+  "description": "DeerFlow Electron Agent Platform - Intelligent agent desktop application",
+  "main": "dist-electron/main.js",
+  "private": true,
+  "scripts": {
+    "electron:build": "cd electron && npx tsc",
+    "electron:start": "npm run electron:build && electron . --no-sandbox",
+    "electron:dev": "npm run electron:build && electron . --no-sandbox"
+  },
+  "author": "DeerFlow Electron Team",
+  "license": "MIT"
+}

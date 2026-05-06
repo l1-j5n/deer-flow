@@ -21,8 +21,8 @@ export default function ChatsPage() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    document.title = `${t.pages.chats} - ${t.pages.appName}`;
-  }, [t.pages.chats, t.pages.appName]);
+    document.title = `${t("pages.chats")} - ${t("pages.appName")}`;
+  }, [t("pages.chats"), t("pages.appName")]);
 
   const filteredThreads = useMemo(() => {
     return threads?.filter((thread) => {
@@ -38,7 +38,7 @@ export default function ChatsPage() {
             <Input
               type="search"
               className="h-12 w-full max-w-(--container-width-md) text-xl"
-              placeholder={t.chats.searchChats}
+              placeholder={t("chats.searchChats")}
               autoFocus
               value={search}
               onChange={(e) => setSearch(e.target.value)}

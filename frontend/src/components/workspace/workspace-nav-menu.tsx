@@ -40,7 +40,7 @@ function NavMenuButtonContent({
   return isSidebarOpen ? (
     <div className="text-muted-foreground flex w-full items-center gap-2 text-left text-sm">
       <SettingsIcon className="size-4" />
-      <span>{t.workspace.settingsAndMore}</span>
+      <span>{t("workspace.settingsAndMore")}</span>
       <ChevronsUpDown className="text-muted-foreground ml-auto size-4" />
     </div>
   ) : (
@@ -95,7 +95,7 @@ export function WorkspaceNavMenu() {
                     }}
                   >
                     <Settings2Icon />
-                    {t.common.settings}
+                    {t("common.settings")}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <a
@@ -105,7 +105,7 @@ export function WorkspaceNavMenu() {
                   >
                     <DropdownMenuItem>
                       <GlobeIcon />
-                      {t.workspace.officialWebsite}
+                      {t("workspace.officialWebsite")}
                     </DropdownMenuItem>
                   </a>
                   <a
@@ -115,7 +115,7 @@ export function WorkspaceNavMenu() {
                   >
                     <DropdownMenuItem>
                       <GithubIcon />
-                      {t.workspace.visitGithub}
+                      {t("workspace.visitGithub")}
                     </DropdownMenuItem>
                   </a>
                   <DropdownMenuSeparator />
@@ -126,13 +126,13 @@ export function WorkspaceNavMenu() {
                   >
                     <DropdownMenuItem>
                       <BugIcon />
-                      {t.workspace.reportIssue}
+                      {t("workspace.reportIssue")}
                     </DropdownMenuItem>
                   </a>
                   <a href="mailto:support@deerflow.tech">
                     <DropdownMenuItem>
                       <MailIcon />
-                      {t.workspace.contactUs}
+                      {t("workspace.contactUs")}
                     </DropdownMenuItem>
                   </a>
                 </DropdownMenuGroup>
@@ -144,7 +144,7 @@ export function WorkspaceNavMenu() {
                   }}
                 >
                   <InfoIcon />
-                  {t.workspace.about}
+                  {t("workspace.about")}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

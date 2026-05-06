@@ -1,6 +1,11 @@
 "use client";
 
-import { ArrowLeftIcon, BotIcon, CheckCircleIcon } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  BotIcon,
+  CheckCircleIcon,
+  LayoutTemplateIcon,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 
@@ -22,7 +27,7 @@ import { useThreadStream } from "@/core/threads/hooks";
 import { uuid } from "@/core/utils/uuid";
 import { cn } from "@/lib/utils";
 
-type Step = "name" | "chat";
+type Step = "choose" | "name" | "chat";
 
 const NAME_RE = /^[A-Za-z0-9-]+$/;
 
@@ -31,7 +36,7 @@ export default function NewAgentPage() {
   const router = useRouter();
 
   // ── Step 1: name form ──────────────────────────────────────────────────────
-  const [step, setStep] = useState<Step>("name");
+  const [step, setStep] = useState<Step>("choose");
   const [nameInput, setNameInput] = useState("");
   const [nameError, setNameError] = useState("");
   const [isCheckingName, setIsCheckingName] = useState(false);
@@ -64,7 +69,7 @@ export default function NewAgentPage() {
     const trimmed = nameInput.trim();
     if (!trimmed) return;
     if (!NAME_RE.test(trimmed)) {
-      setNameError(t.agents.nameStepInvalidError);
+      setNameError(t("agents.nameStepInvalidError"));
       return;
     }
     setNameError("");
@@ -72,11 +77,11 @@ export default function NewAgentPage() {
     try {
       const result = await checkAgentName(trimmed);
       if (!result.available) {
-        setNameError(t.agents.nameStepAlreadyExistsError);
+        setNameError(t("agents.nameStepAlreadyExistsError"));
         return;
       }
     } catch {
-      setNameError(t.agents.nameStepCheckError);
+      setNameError(t("agents.nameStepCheckError"));
       return;
     } finally {
       setIsCheckingName(false);
@@ -84,17 +89,17 @@ export default function NewAgentPage() {
     setAgentName(trimmed);
     setStep("chat");
     await sendMessage(threadId, {
-      text: t.agents.nameStepBootstrapMessage.replace("{name}", trimmed),
+      text: t("agents.nameStepBootstrapMessage", { name: trimmed }),
       files: [],
     });
   }, [
     nameInput,
     sendMessage,
     threadId,
-    t.agents.nameStepBootstrapMessage,
-    t.agents.nameStepInvalidError,
-    t.agents.nameStepAlreadyExistsError,
-    t.agents.nameStepCheckError,
+    t("agents.nameStepBootstrapMessage"),
+    t("agents.nameStepInvalidError"),
+    t("agents.nameStepAlreadyExistsError"),
+    t("agents.nameStepCheckError"),
   ]);
 
   const handleNameKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -128,9 +133,69 @@ export default function NewAgentPage() {
       >
         <ArrowLeftIcon className="h-4 w-4" />
       </Button>
-      <h1 className="text-sm font-semibold">{t.agents.createPageTitle}</h1>
+      <h1 className="text-sm font-semibold">{t("agents.createPageTitle")}</h1>
     </header>
   );
+
+  // ── Step 0: choose creation method ─────────────────────────────────────────
+
+  if (step === "choose") {
+    return (
+      <div className="flex size-full flex-col">
+        {header}
+        <main className="flex flex-1 flex-col items-center justify-center px-4">
+          <div className="w-full max-w-md space-y-8">
+            <div className="space-y-3 text-center">
+              <div className="bg-primary/10 mx-auto flex h-14 w-14 items-center justify-center rounded-full">
+                <BotIcon className="text-primary h-7 w-7" />
+              </div>
+              <div className="space-y-1">
+                <h2 className="text-xl font-semibold">
+                  {t("agents.templates.chooseTemplate")}
+                </h2>
+              </div>
+            </div>
+
+            <div className="grid gap-4">
+              {/* Custom Agent Card */}
+              <button
+                onClick={() => setStep("name")}
+                className="flex items-center gap-4 rounded-xl border p-4 text-left transition-all hover:border-primary hover:shadow-sm"
+              >
+                <div className="bg-primary/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg">
+                  <BotIcon className="text-primary h-5 w-5" />
+                </div>
+                <div>
+                  <p className="font-medium">{t("agents.templates.customAgent")}</p>
+                  <p className="text-muted-foreground text-sm">
+                    {t("agents.templates.customAgentDescription")}
+                  </p>
+                </div>
+              </button>
+
+              {/* Template Card */}
+              <button
+                onClick={() => router.push("/workspace/agents/new/template")}
+                className="flex items-center gap-4 rounded-xl border p-4 text-left transition-all hover:border-primary hover:shadow-sm"
+              >
+                <div className="bg-primary/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg">
+                  <LayoutTemplateIcon className="text-primary h-5 w-5" />
+                </div>
+                <div>
+                  <p className="font-medium">
+                    {t("agents.templates.createFromTemplate")}
+                  </p>
+                  <p className="text-muted-foreground text-sm">
+                    {t("agents.templates.description")}
+                  </p>
+                </div>
+              </button>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   // ── Step 1: name form ──────────────────────────────────────────────────────
 
@@ -146,10 +211,10 @@ export default function NewAgentPage() {
               </div>
               <div className="space-y-1">
                 <h2 className="text-xl font-semibold">
-                  {t.agents.nameStepTitle}
+                  {t("agents.nameStepTitle")}
                 </h2>
                 <p className="text-muted-foreground text-sm">
-                  {t.agents.nameStepHint}
+                  {t("agents.nameStepHint")}
                 </p>
               </div>
             </div>
@@ -157,7 +222,7 @@ export default function NewAgentPage() {
             <div className="space-y-3">
               <Input
                 autoFocus
-                placeholder={t.agents.nameStepPlaceholder}
+                placeholder={t("agents.nameStepPlaceholder")}
                 value={nameInput}
                 onChange={(e) => {
                   setNameInput(e.target.value);
@@ -174,7 +239,7 @@ export default function NewAgentPage() {
                 onClick={() => void handleConfirmName()}
                 disabled={!nameInput.trim() || isCheckingName}
               >
-                {t.agents.nameStepContinue}
+                {t("agents.nameStepContinue")}
               </Button>
             </div>
           </div>
@@ -208,7 +273,7 @@ export default function NewAgentPage() {
                   // ✅ Success card
                   <div className="flex flex-col items-center gap-4 rounded-2xl border py-8 text-center">
                     <CheckCircleIcon className="text-primary h-10 w-10" />
-                    <p className="font-semibold">{t.agents.agentCreated}</p>
+                    <p className="font-semibold">{t("agents.agentCreated")}</p>
                     <div className="flex gap-2">
                       <Button
                         onClick={() =>
@@ -217,13 +282,13 @@ export default function NewAgentPage() {
                           )
                         }
                       >
-                        {t.agents.startChatting}
+                        {t("agents.startChatting")}
                       </Button>
                       <Button
                         variant="outline"
                         onClick={() => router.push("/workspace/agents")}
                       >
-                        {t.agents.backToGallery}
+                        {t("agents.backToGallery")}
                       </Button>
                     </div>
                   </div>
@@ -234,7 +299,7 @@ export default function NewAgentPage() {
                   >
                     <PromptInputTextarea
                       autoFocus
-                      placeholder={t.agents.createPageSubtitle}
+                      placeholder={t("agents.createPageSubtitle")}
                       disabled={thread.isLoading}
                     />
                     <PromptInputFooter className="justify-end">

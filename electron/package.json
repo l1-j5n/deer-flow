@@ -1,0 +1,26 @@
+{
+  "name": "deer-flow-electron",
+  "version": "0.1.0",
+  "description": "DeerFlow Electron Agent Platform - Intelligent agent desktop application",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && electron .",
+    "dev": "tsc && electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "clean": "rimraf dist"
+  },
+  "author": "DeerFlow Electron Team",
+  "license": "MIT",
+  "dependencies": {
+    "electron-updater": "^6.8.3"
+  },
+  "devDependencies": {
+    "electron": "^35.0.0",
+    "electron-builder": "^26.0.0",
+    "rimraf": "^6.0.0",
+    "sharp": "^0.34.5",
+    "typescript": "^5.8.0"
+  }
+}

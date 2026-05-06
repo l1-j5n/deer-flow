@@ -38,32 +38,32 @@ export function Welcome({
     >
       <div className="text-2xl font-bold">
         {searchParams.get("mode") === "skill" ? (
-          `✨ ${t.welcome.createYourOwnSkill} ✨`
+          `✨ ${t("welcome.createYourOwnSkill")} ✨`
         ) : (
           <div className="flex items-center gap-2">
             <div className={cn("inline-block", !waved ? "animate-wave" : "")}>
               {isUltra ? "🚀" : "👋"}
             </div>
-            <AuroraText colors={colors}>{t.welcome.greeting}</AuroraText>
+            <AuroraText colors={colors}>{t("welcome.greeting")}</AuroraText>
           </div>
         )}
       </div>
       {searchParams.get("mode") === "skill" ? (
         <div className="text-muted-foreground text-sm">
-          {t.welcome.createYourOwnSkillDescription.includes("\n") ? (
+          {t("welcome.createYourOwnSkillDescription").includes("\n") ? (
             <pre className="font-sans whitespace-pre">
-              {t.welcome.createYourOwnSkillDescription}
+              {t("welcome.createYourOwnSkillDescription")}
             </pre>
           ) : (
-            <p>{t.welcome.createYourOwnSkillDescription}</p>
+            <p>{t("welcome.createYourOwnSkillDescription")}</p>
           )}
         </div>
       ) : (
         <div className="text-muted-foreground text-sm">
-          {t.welcome.description.includes("\n") ? (
-            <pre className="whitespace-pre">{t.welcome.description}</pre>
+          {t("welcome.description").includes("\n") ? (
+            <pre className="whitespace-pre">{t("welcome.description")}</pre>
           ) : (
-            <p>{t.welcome.description}</p>
+            <p>{t("welcome.description")}</p>
           )}
         </div>
       )}

@@ -139,7 +139,7 @@ export function SubtaskCard({
             task.latestMessage &&
             hasToolCalls(task.latestMessage) && (
               <ChainOfThoughtStep
-                label={t.subtasks.in_progress}
+                label={t("subtasks.in_progress")}
                 icon={<Loader2Icon className="size-4 animate-spin" />}
               >
                 {explainLastToolCall(task.latestMessage, t)}
@@ -148,7 +148,7 @@ export function SubtaskCard({
           {task.status === "completed" && (
             <>
               <ChainOfThoughtStep
-                label={t.subtasks.completed}
+                label={t("subtasks.completed")}
                 icon={<CheckCircleIcon className="size-4" />}
               ></ChainOfThoughtStep>
               <ChainOfThoughtStep

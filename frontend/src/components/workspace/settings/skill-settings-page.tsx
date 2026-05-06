@@ -34,11 +34,11 @@ export function SkillSettingsPage({ onClose }: { onClose?: () => void } = {}) {
   const { skills, isLoading, error } = useSkills();
   return (
     <SettingsSection
-      title={t.settings.skills.title}
-      description={t.settings.skills.description}
+      title={t("settings.skills.title")}
+      description={t("settings.skills.description")}
     >
       {isLoading ? (
-        <div className="text-muted-foreground text-sm">{t.common.loading}</div>
+        <div className="text-muted-foreground text-sm">{t("common.loading")}</div>
       ) : error ? (
         <div>Error: {error.message}</div>
       ) : (
@@ -73,15 +73,15 @@ function SkillSettingsList({
         <div className="flex gap-2">
           <Tabs defaultValue="public" onValueChange={setFilter}>
             <TabsList variant="line">
-              <TabsTrigger value="public">{t.common.public}</TabsTrigger>
-              <TabsTrigger value="custom">{t.common.custom}</TabsTrigger>
+              <TabsTrigger value="public">{t("common.public")}</TabsTrigger>
+              <TabsTrigger value="custom">{t("common.custom")}</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
         <div>
           <Button size="sm" onClick={handleCreateSkill}>
             <SparklesIcon className="size-4" />
-            {t.settings.skills.createSkill}
+            {t("settings.skills.createSkill")}
           </Button>
         </div>
       </header>
@@ -122,13 +122,13 @@ function EmptySkill({ onCreateSkill }: { onCreateSkill: () => void }) {
         <EmptyMedia variant="icon">
           <SparklesIcon />
         </EmptyMedia>
-        <EmptyTitle>{t.settings.skills.emptyTitle}</EmptyTitle>
+        <EmptyTitle>{t("settings.skills.emptyTitle")}</EmptyTitle>
         <EmptyDescription>
-          {t.settings.skills.emptyDescription}
+          {t("settings.skills.emptyDescription")}
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
-        <Button onClick={onCreateSkill}>{t.settings.skills.emptyButton}</Button>
+        <Button onClick={onCreateSkill}>{t("settings.skills.emptyButton")}</Button>
       </EmptyContent>
     </Empty>
   );

@@ -46,22 +46,22 @@ export function TokenUsageIndicator({
       </TooltipTrigger>
       <TooltipContent side="bottom" align="end">
         <div className="space-y-1 text-xs">
-          <div className="font-medium">{t.tokenUsage.title}</div>
+          <div className="font-medium">{t("tokenUsage.title")}</div>
           <div className="flex justify-between gap-4">
-            <span>{t.tokenUsage.input}</span>
+            <span>{t("tokenUsage.input")}</span>
             <span className="font-mono">
               {formatTokenCount(usage.inputTokens)}
             </span>
           </div>
           <div className="flex justify-between gap-4">
-            <span>{t.tokenUsage.output}</span>
+            <span>{t("tokenUsage.output")}</span>
             <span className="font-mono">
               {formatTokenCount(usage.outputTokens)}
             </span>
           </div>
           <div className="border-t pt-1">
             <div className="flex justify-between gap-4">
-              <span>{t.tokenUsage.total}</span>
+              <span>{t("tokenUsage.total")}</span>
               <span className="font-mono font-medium">
                 {formatTokenCount(usage.totalTokens)}
               </span>

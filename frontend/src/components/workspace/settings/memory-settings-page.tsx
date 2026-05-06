@@ -64,13 +64,13 @@ function formatMemorySection(
 ): string {
   const content =
     section.summary.trim() ||
-    `<span class="text-muted-foreground">${t.settings.memory.markdown.empty}</span>`;
+    `<span class="text-muted-foreground">${t("settings.memory.markdown.empty")}</span>`;
   return [
     `### ${section.title}`,
     content,
     "",
     section.updatedAt &&
-      `> ${t.settings.memory.markdown.updatedAt}: \`${formatTimeAgo(section.updatedAt)}\``,
+      `> ${t("settings.memory.markdown.updatedAt")}: \`${formatTimeAgo(section.updatedAt)}\``,
   ]
     .filter(Boolean)
     .join("\n");
@@ -82,40 +82,40 @@ function buildMemorySectionGroups(
 ): MemorySectionGroup[] {
   return [
     {
-      title: t.settings.memory.markdown.userContext,
+      title: t("settings.memory.markdown.userContext"),
       sections: [
         {
-          title: t.settings.memory.markdown.work,
+          title: t("settings.memory.markdown.work"),
           summary: memory.user.workContext.summary,
           updatedAt: memory.user.workContext.updatedAt,
         },
         {
-          title: t.settings.memory.markdown.personal,
+          title: t("settings.memory.markdown.personal"),
           summary: memory.user.personalContext.summary,
           updatedAt: memory.user.personalContext.updatedAt,
         },
         {
-          title: t.settings.memory.markdown.topOfMind,
+          title: t("settings.memory.markdown.topOfMind"),
           summary: memory.user.topOfMind.summary,
           updatedAt: memory.user.topOfMind.updatedAt,
         },
       ],
     },
     {
-      title: t.settings.memory.markdown.historyBackground,
+      title: t("settings.memory.markdown.historyBackground"),
       sections: [
         {
-          title: t.settings.memory.markdown.recentMonths,
+          title: t("settings.memory.markdown.recentMonths"),
           summary: memory.history.recentMonths.summary,
           updatedAt: memory.history.recentMonths.updatedAt,
         },
         {
-          title: t.settings.memory.markdown.earlierContext,
+          title: t("settings.memory.markdown.earlierContext"),
           summary: memory.history.earlierContext.summary,
           updatedAt: memory.history.earlierContext.updatedAt,
         },
         {
-          title: t.settings.memory.markdown.longTermBackground,
+          title: t("settings.memory.markdown.longTermBackground"),
           summary: memory.history.longTermBackground.summary,
           updatedAt: memory.history.longTermBackground.updatedAt,
         },
@@ -131,9 +131,9 @@ function summariesToMarkdown(
 ) {
   const parts: string[] = [];
 
-  parts.push(`## ${t.settings.memory.markdown.overview}`);
+  parts.push(`## ${t("settings.memory.markdown.overview")}`);
   parts.push(
-    `- **${t.common.lastUpdated}**: \`${formatTimeAgo(memory.lastUpdated)}\``,
+    `- **${t("common.lastUpdated")}**: \`${formatTimeAgo(memory.lastUpdated)}\``,
   );
 
   for (const group of sectionGroups) {
@@ -199,36 +199,36 @@ export function MemorySettingsPage() {
   const deferredQuery = useDeferredValue(query);
   const normalizedQuery = deferredQuery.trim().toLowerCase();
 
-  const clearAllLabel = t.settings.memory.clearAll ?? "Clear all memory";
+  const clearAllLabel = t("settings.memory.clearAll") ?? "Clear all memory";
   const clearAllConfirmTitle =
-    t.settings.memory.clearAllConfirmTitle ?? "Clear all memory?";
+    t("settings.memory.clearAllConfirmTitle") ?? "Clear all memory?";
   const clearAllConfirmDescription =
-    t.settings.memory.clearAllConfirmDescription ??
+    t("settings.memory.clearAllConfirmDescription") ??
     "This will remove all saved summaries and facts. This action cannot be undone.";
   const clearAllSuccess =
-    t.settings.memory.clearAllSuccess ?? "All memory cleared";
+    t("settings.memory.clearAllSuccess") ?? "All memory cleared";
   const factDeleteConfirmTitle =
-    t.settings.memory.factDeleteConfirmTitle ?? "Delete this fact?";
+    t("settings.memory.factDeleteConfirmTitle") ?? "Delete this fact?";
   const factDeleteConfirmDescription =
-    t.settings.memory.factDeleteConfirmDescription ??
+    t("settings.memory.factDeleteConfirmDescription") ??
     "This fact will be removed from memory immediately. This action cannot be undone.";
   const factDeleteSuccess =
-    t.settings.memory.factDeleteSuccess ?? "Fact deleted";
-  const noFacts = t.settings.memory.noFacts ?? "No saved facts yet.";
+    t("settings.memory.factDeleteSuccess") ?? "Fact deleted";
+  const noFacts = t("settings.memory.noFacts") ?? "No saved facts yet.";
   const summaryReadOnly =
-    t.settings.memory.summaryReadOnly ??
+    t("settings.memory.summaryReadOnly") ??
     "Summary sections are read-only for now. You can currently clear all memory or delete individual facts.";
   const memoryFullyEmpty =
-    t.settings.memory.memoryFullyEmpty ?? "No memory saved yet.";
+    t("settings.memory.memoryFullyEmpty") ?? "No memory saved yet.";
   const factPreviewLabel =
-    t.settings.memory.factPreviewLabel ?? "Fact to delete";
+    t("settings.memory.factPreviewLabel") ?? "Fact to delete";
   const searchPlaceholder =
-    t.settings.memory.searchPlaceholder ?? "Search memory";
-  const filterAll = t.settings.memory.filterAll ?? "All";
-  const filterFacts = t.settings.memory.filterFacts ?? "Facts";
-  const filterSummaries = t.settings.memory.filterSummaries ?? "Summaries";
+    t("settings.memory.searchPlaceholder") ?? "Search memory";
+  const filterAll = t("settings.memory.filterAll") ?? "All";
+  const filterFacts = t("settings.memory.filterFacts") ?? "Facts";
+  const filterSummaries = t("settings.memory.filterSummaries") ?? "Summaries";
   const noMatches =
-    t.settings.memory.noMatches ?? "No matching memory found";
+    t("settings.memory.noMatches") ?? "No matching memory found";
 
   const sectionGroups = memory ? buildMemorySectionGroups(memory, t) : [];
   const filteredSectionGroups = sectionGroups
@@ -291,16 +291,16 @@ export function MemorySettingsPage() {
   return (
     <>
       <SettingsSection
-        title={t.settings.memory.title}
-        description={t.settings.memory.description}
+        title={t("settings.memory.title")}
+        description={t("settings.memory.description")}
       >
         {isLoading ? (
-          <div className="text-muted-foreground text-sm">{t.common.loading}</div>
+          <div className="text-muted-foreground text-sm">{t("common.loading")}</div>
         ) : error ? (
           <div>Error: {error.message}</div>
         ) : !memory ? (
           <div className="text-muted-foreground text-sm">
-            {t.settings.memory.empty}
+            {t("settings.memory.empty")}
           </div>
         ) : (
           <div className="space-y-4">
@@ -339,7 +339,7 @@ export function MemorySettingsPage() {
                 onClick={() => setClearDialogOpen(true)}
                 disabled={clearMemory.isPending}
               >
-                {clearMemory.isPending ? t.common.loading : clearAllLabel}
+                {clearMemory.isPending ? t("common.loading") : clearAllLabel}
               </Button>
             </div>
 
@@ -367,7 +367,7 @@ export function MemorySettingsPage() {
               <div className="rounded-lg border p-4">
                 <div className="mb-4">
                   <h3 className="text-base font-medium">
-                    {t.settings.memory.markdown.facts}
+                    {t("settings.memory.markdown.facts")}
                   </h3>
                 </div>
 
@@ -380,7 +380,7 @@ export function MemorySettingsPage() {
                     {filteredFacts.map((fact) => {
                       const { key } = confidenceToLevelKey(fact.confidence);
                       const confidenceText =
-                        t.settings.memory.markdown.table.confidenceLevel[key];
+                        t("settings.memory.markdown.table.confidenceLevel")[key];
 
                       return (
                         <div
@@ -391,19 +391,19 @@ export function MemorySettingsPage() {
                             <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
                               <span>
                                 <span className="text-muted-foreground">
-                                  {t.settings.memory.markdown.table.category}:
+                                  {t("settings.memory.markdown.table.category")}:
                                 </span>{" "}
                                 {upperFirst(fact.category)}
                               </span>
                               <span>
                                 <span className="text-muted-foreground">
-                                  {t.settings.memory.markdown.table.confidence}:
+                                  {t("settings.memory.markdown.table.confidence")}:
                                 </span>{" "}
                                 {confidenceText}
                               </span>
                               <span>
                                 <span className="text-muted-foreground">
-                                  {t.settings.memory.markdown.table.createdAt}:
+                                  {t("settings.memory.markdown.table.createdAt")}:
                                 </span>{" "}
                                 {formatTimeAgo(fact.createdAt)}
                               </span>
@@ -413,7 +413,7 @@ export function MemorySettingsPage() {
                               href={pathOfThread(fact.source)}
                               className="text-primary text-sm underline-offset-4 hover:underline"
                             >
-                              {t.settings.memory.markdown.table.view}
+                              {t("settings.memory.markdown.table.view")}
                             </Link>
                           </div>
 
@@ -423,8 +423,8 @@ export function MemorySettingsPage() {
                             className="text-destructive hover:text-destructive shrink-0"
                             onClick={() => setFactToDelete(fact)}
                             disabled={deleteMemoryFact.isPending}
-                            title={t.common.delete}
-                            aria-label={t.common.delete}
+                            title={t("common.delete")}
+                            aria-label={t("common.delete")}
                           >
                             <Trash2Icon className="h-4 w-4" />
                           </Button>
@@ -453,14 +453,14 @@ export function MemorySettingsPage() {
               onClick={() => setClearDialogOpen(false)}
               disabled={clearMemory.isPending}
             >
-              {t.common.cancel}
+              {t("common.cancel")}
             </Button>
             <Button
               variant="destructive"
               onClick={() => void handleClearMemory()}
               disabled={clearMemory.isPending}
             >
-              {clearMemory.isPending ? t.common.loading : clearAllLabel}
+              {clearMemory.isPending ? t("common.loading") : clearAllLabel}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -497,14 +497,14 @@ export function MemorySettingsPage() {
               onClick={() => setFactToDelete(null)}
               disabled={deleteMemoryFact.isPending}
             >
-              {t.common.cancel}
+              {t("common.cancel")}
             </Button>
             <Button
               variant="destructive"
               onClick={() => void handleDeleteFact()}
               disabled={deleteMemoryFact.isPending}
             >
-              {deleteMemoryFact.isPending ? t.common.loading : t.common.delete}
+              {deleteMemoryFact.isPending ? t("common.loading") : t("common.delete")}
             </Button>
           </DialogFooter>
         </DialogContent>

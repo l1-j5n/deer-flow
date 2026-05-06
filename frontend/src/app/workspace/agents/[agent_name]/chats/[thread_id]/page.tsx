@@ -105,7 +105,7 @@ export default function AgentChatPage() {
               <ThreadTitle threadId={threadId} thread={thread} />
             </div>
             <div className="mr-4 flex items-center">
-              <Tooltip content={t.agents.newChat}>
+              <Tooltip content={t("agents.newChat")}>
                 <Button
                   size="sm"
                   variant="secondary"
@@ -113,7 +113,7 @@ export default function AgentChatPage() {
                     router.push(`/workspace/agents/${agent_name}/chats/new`);
                   }}
                 >
-                  <PlusSquare /> {t.agents.newChat}
+                  <PlusSquare /> {t("agents.newChat")}
                 </Button>
               </Tooltip>
               <TokenUsageIndicator messages={thread.messages} />
@@ -178,7 +178,7 @@ export default function AgentChatPage() {
                 />
                 {env.NEXT_PUBLIC_STATIC_WEBSITE_ONLY === "true" && (
                   <div className="text-muted-foreground/67 w-full translate-y-12 text-center text-xs">
-                    {t.common.notAvailableInDemoMode}
+                    {t("common.notAvailableInDemoMode")}
                   </div>
                 )}
               </div>

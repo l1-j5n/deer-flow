@@ -120,9 +120,9 @@ export function RecentChatList() {
       const shareUrl = `${baseUrl}/workspace/chats/${threadId}`;
       try {
         await navigator.clipboard.writeText(shareUrl);
-        toast.success(t.clipboard.linkCopied);
+        toast.success(t("clipboard.linkCopied"));
       } catch {
-        toast.error(t.clipboard.failedToCopyToClipboard);
+        toast.error(t("clipboard.failedToCopyToClipboard"));
       }
     },
     [t],
@@ -137,7 +137,7 @@ export function RecentChatList() {
         );
         const messages = state.values?.messages ?? [];
         if (messages.length === 0) {
-          toast.error(t.conversation.noMessages);
+          toast.error(t("conversation.noMessages"));
           return;
         }
         if (format === "markdown") {
@@ -145,7 +145,7 @@ export function RecentChatList() {
         } else {
           exportThreadAsJSON(thread, messages);
         }
-        toast.success(t.common.exportSuccess);
+        toast.success(t("common.exportSuccess"));
       } catch {
         toast.error("Failed to export conversation");
       }
@@ -161,8 +161,8 @@ export function RecentChatList() {
       <SidebarGroup>
         <SidebarGroupLabel>
           {env.NEXT_PUBLIC_STATIC_WEBSITE_ONLY !== "true"
-            ? t.sidebar.recentChats
-            : t.sidebar.demoChats}
+            ? t("sidebar.recentChats")
+            : t("sidebar.demoChats")}
         </SidebarGroupLabel>
         <SidebarGroupContent className="group-data-[collapsible=icon]:pointer-events-none group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0">
           <SidebarMenu>
@@ -190,7 +190,7 @@ export function RecentChatList() {
                                 className="bg-background/50 hover:bg-background"
                               >
                                 <MoreHorizontal />
-                                <span className="sr-only">{t.common.more}</span>
+                                <span className="sr-only">{t("common.more")}</span>
                               </SidebarMenuAction>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent
@@ -207,18 +207,18 @@ export function RecentChatList() {
                                 }
                               >
                                 <Pencil className="text-muted-foreground" />
-                                <span>{t.common.rename}</span>
+                                <span>{t("common.rename")}</span>
                               </DropdownMenuItem>
                               <DropdownMenuItem
                                 onSelect={() => handleShare(thread.thread_id)}
                               >
                                 <Share2 className="text-muted-foreground" />
-                                <span>{t.common.share}</span>
+                                <span>{t("common.share")}</span>
                               </DropdownMenuItem>
                               <DropdownMenuSub>
                                 <DropdownMenuSubTrigger>
                                   <Download className="text-muted-foreground" />
-                                  <span>{t.common.export}</span>
+                                  <span>{t("common.export")}</span>
                                 </DropdownMenuSubTrigger>
                                 <DropdownMenuSubContent>
                                   <DropdownMenuItem
@@ -227,7 +227,7 @@ export function RecentChatList() {
                                     }
                                   >
                                     <FileText className="text-muted-foreground" />
-                                    <span>{t.common.exportAsMarkdown}</span>
+                                    <span>{t("common.exportAsMarkdown")}</span>
                                   </DropdownMenuItem>
                                   <DropdownMenuItem
                                     onSelect={() =>
@@ -235,7 +235,7 @@ export function RecentChatList() {
                                     }
                                   >
                                     <FileJson className="text-muted-foreground" />
-                                    <span>{t.common.exportAsJSON}</span>
+                                    <span>{t("common.exportAsJSON")}</span>
                                   </DropdownMenuItem>
                                 </DropdownMenuSubContent>
                               </DropdownMenuSub>
@@ -244,7 +244,7 @@ export function RecentChatList() {
                                 onSelect={() => handleDelete(thread.thread_id)}
                               >
                                 <Trash2 className="text-muted-foreground" />
-                                <span>{t.common.delete}</span>
+                                <span>{t("common.delete")}</span>
                               </DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
@@ -263,13 +263,13 @@ export function RecentChatList() {
       <Dialog open={renameDialogOpen} onOpenChange={setRenameDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{t.common.rename}</DialogTitle>
+            <DialogTitle>{t("common.rename")}</DialogTitle>
           </DialogHeader>
           <div className="py-4">
             <Input
               value={renameValue}
               onChange={(e) => setRenameValue(e.target.value)}
-              placeholder={t.common.rename}
+              placeholder={t("common.rename")}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   handleRenameSubmit();
@@ -282,9 +282,9 @@ export function RecentChatList() {
               variant="outline"
               onClick={() => setRenameDialogOpen(false)}
             >
-              {t.common.cancel}
+              {t("common.cancel")}
             </Button>
-            <Button onClick={handleRenameSubmit}>{t.common.save}</Button>
+            <Button onClick={handleRenameSubmit}>{t("common.save")}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

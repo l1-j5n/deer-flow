@@ -18,23 +18,23 @@ export function ThreadTitle({
   const { t } = useI18n();
   const { isNewThread } = useThreadChat();
   useEffect(() => {
-    let _title = t.pages.untitled;
+    let _title = t("pages.untitled");
 
     if (thread.values?.title) {
       _title = thread.values.title;
     } else if (isNewThread) {
-      _title = t.pages.newChat;
+      _title = t("pages.newChat");
     }
     if (thread.isThreadLoading) {
-      document.title = `Loading... - ${t.pages.appName}`;
+      document.title = `Loading... - ${t("pages.appName")}`;
     } else {
-      document.title = `${_title} - ${t.pages.appName}`;
+      document.title = `${_title} - ${t("pages.appName")}`;
     }
   }, [
     isNewThread,
-    t.pages.newChat,
-    t.pages.untitled,
-    t.pages.appName,
+    t("pages.newChat"),
+    t("pages.untitled"),
+    t("pages.appName"),
     thread.isThreadLoading,
     thread.values,
   ]);

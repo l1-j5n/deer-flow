@@ -130,7 +130,7 @@ export class MarketplaceService extends EventEmitter {
     this.registryPath = path.join(projectRoot, MARKETPLACE_REGISTRY);
     this.pluginManager = deps?.pluginManager;
     this.skillManager = deps?.skillManager;
-    this.validator = new PluginSDKValidator();
+    this.validator = new PluginSDKValidator("1.0.0");
 
     this.ensureDirectories();
     this.loadRegistry();

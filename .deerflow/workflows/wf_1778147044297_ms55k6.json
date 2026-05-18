@@ -1,0 +1,30 @@
+{
+  "name": "Validation Test",
+  "entryNode": "start",
+  "nodes": [
+    {
+      "id": "start",
+      "type": "input",
+      "name": "Start",
+      "config": {}
+    },
+    {
+      "id": "middle",
+      "type": "llm",
+      "name": "Process",
+      "config": {
+        "prompt": "test"
+      },
+      "next": "end"
+    },
+    {
+      "id": "end",
+      "type": "output",
+      "name": "End",
+      "config": {}
+    }
+  ],
+  "id": "wf_1778147044297_ms55k6",
+  "version": 1,
+  "createdAt": "2026-05-07T09:44:04.297Z"
+}

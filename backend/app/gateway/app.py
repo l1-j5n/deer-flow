@@ -12,6 +12,7 @@ from app.gateway.routers import (
     artifacts,
     audit,
     backup,
+    benchmark,
     channels,
     collaboration,
     conversation_memory,
@@ -31,6 +32,7 @@ from app.gateway.routers import (
     reasoning,
     scheduler,
     security,
+    session_export,
     settings_workspace,
     sharing,
     shortcuts,
@@ -707,6 +709,9 @@ This gateway provides custom endpoints for models, MCP configuration, skills, an
     # Backup API is mounted at /api/electron/backup
     app.include_router(backup.router)
 
+    # Benchmark API is mounted at /api/electron/benchmark
+    app.include_router(benchmark.router)
+
     # Tools API is mounted at /api/electron/tools
     app.include_router(tools.router)
 
@@ -724,6 +729,9 @@ This gateway provides custom endpoints for models, MCP configuration, skills, an
 
     # Security API is mounted at /api/electron/security
     app.include_router(security.router)
+
+    # Session Export API is mounted at /api/session-export
+    app.include_router(session_export.router)
 
     # Settings API is mounted at /api/electron/settings
     app.include_router(settings_workspace.router)

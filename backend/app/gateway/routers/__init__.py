@@ -1,4 +1,4 @@
-from . import agents, alerts, artifacts, audit, backup, channels, collaboration, conversation_memory, health, knowledge_base, knowledge_graph, marketplace, mcp, memory, models, notifications, performance, plugins, realtime, reasoning, scheduler, security, settings_workspace, sharing, skills, shortcuts, suggestions, threads, tools, uploads, ws, theme
+from . import agents, alerts, artifacts, audit, benchmark, backup, channels, collaboration, conversation_memory, health, knowledge_base, knowledge_graph, marketplace, mcp, memory, models, notifications, performance, plugins, realtime, reasoning, scheduler, security, session_export, settings_workspace, sharing, skills, shortcuts, suggestions, threads, tools, uploads, ws, theme
 
 __all__ = [
     "agents",
@@ -23,6 +23,7 @@ __all__ = [
     "reasoning",
     "scheduler",
     "security",
+    "session_export",
     "settings_workspace",
     "sharing",
     "skills",

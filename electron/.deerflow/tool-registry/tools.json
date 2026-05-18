@@ -1,0 +1,291 @@
+{
+  "updatedAt": "2026-05-07T11:11:30.676Z",
+  "tools": [
+    {
+      "name": "web_search",
+      "description": "Search the web for information",
+      "category": "web",
+      "tags": [
+        "search",
+        "web",
+        "internet"
+      ],
+      "parameters": [
+        {
+          "name": "query",
+          "type": "string",
+          "description": "Search query",
+          "required": true,
+          "validation": {
+            "maxLength": 500
+          }
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "description": "Maximum results",
+          "required": false,
+          "default": 5,
+          "validation": {
+            "min": 1,
+            "max": 20
+          }
+        }
+      ],
+      "returnType": {
+        "type": "array",
+        "description": "Array of search results"
+      },
+      "status": "available",
+      "version": "1.0.0",
+      "source": "builtin",
+      "permissions": [
+        "network"
+      ],
+      "examples": [
+        {
+          "description": "Basic search",
+          "parameters": {
+            "query": "quantum computing"
+          }
+        },
+        {
+          "description": "Limited results",
+          "parameters": {
+            "query": "AI news",
+            "limit": 3
+          }
+        }
+      ],
+      "id": "tool-1778120816245-zg1oahunf",
+      "createdAt": "2026-05-07T02:26:56.245Z",
+      "updatedAt": "2026-05-07T11:11:00.674Z"
+    },
+    {
+      "name": "read_file",
+      "description": "Read contents of a file",
+      "category": "file",
+      "tags": [
+        "file",
+        "read",
+        "filesystem"
+      ],
+      "parameters": [
+        {
+          "name": "path",
+          "type": "string",
+          "description": "File path",
+          "required": true
+        },
+        {
+          "name": "encoding",
+          "type": "enum",
+          "description": "File encoding",
+          "required": false,
+          "default": "utf-8",
+          "enumValues": [
+            "utf-8",
+            "base64",
+            "binary"
+          ]
+        }
+      ],
+      "returnType": {
+        "type": "string",
+        "description": "File contents"
+      },
+      "status": "available",
+      "version": "1.0.0",
+      "source": "builtin",
+      "permissions": [
+        "file_read"
+      ],
+      "examples": [
+        {
+          "description": "Read text file",
+          "parameters": {
+            "path": "/path/to/file.txt"
+          }
+        }
+      ],
+      "id": "tool-1778120816245-vlfpgy1ie",
+      "createdAt": "2026-05-07T02:26:56.245Z",
+      "updatedAt": "2026-05-07T11:11:00.674Z"
+    },
+    {
+      "name": "write_file",
+      "description": "Write content to a file",
+      "category": "file",
+      "tags": [
+        "file",
+        "write",
+        "filesystem"
+      ],
+      "parameters": [
+        {
+          "name": "path",
+          "type": "string",
+          "description": "File path",
+          "required": true
+        },
+        {
+          "name": "content",
+          "type": "string",
+          "description": "Content to write",
+          "required": true
+        },
+        {
+          "name": "append",
+          "type": "boolean",
+          "description": "Append instead of overwrite",
+          "required": false,
+          "default": false
+        }
+      ],
+      "returnType": {
+        "type": "boolean",
+        "description": "Success status"
+      },
+      "status": "available",
+      "version": "1.0.0",
+      "source": "builtin",
+      "permissions": [
+        "file_write"
+      ],
+      "examples": [
+        {
+          "description": "Write new file",
+          "parameters": {
+            "path": "/path/to/file.txt",
+            "content": "Hello"
+          }
+        }
+      ],
+      "id": "tool-1778120816245-90cne35pe",
+      "createdAt": "2026-05-07T02:26:56.245Z",
+      "updatedAt": "2026-05-07T11:11:00.674Z"
+    },
+    {
+      "name": "execute_code",
+      "description": "Execute code in a sandboxed environment",
+      "category": "code",
+      "tags": [
+        "code",
+        "execute",
+        "sandbox"
+      ],
+      "parameters": [
+        {
+          "name": "language",
+          "type": "enum",
+          "description": "Programming language",
+          "required": true,
+          "enumValues": [
+            "python",
+            "javascript",
+            "bash"
+          ]
+        },
+        {
+          "name": "code",
+          "type": "string",
+          "description": "Code to execute",
+          "required": true
+        },
+        {
+          "name": "timeout",
+          "type": "number",
+          "description": "Execution timeout in seconds",
+          "required": false,
+          "default": 30,
+          "validation": {
+            "min": 1,
+            "max": 300
+          }
+        }
+      ],
+      "returnType": {
+        "type": "object",
+        "description": "Execution result with stdout, stderr, exit code"
+      },
+      "status": "available",
+      "version": "1.0.0",
+      "source": "builtin",
+      "permissions": [
+        "code_execution"
+      ],
+      "examples": [
+        {
+          "description": "Run Python",
+          "parameters": {
+            "language": "python",
+            "code": "print('hello')"
+          }
+        }
+      ],
+      "id": "tool-1778120816245-ner0bdyul",
+      "createdAt": "2026-05-07T02:26:56.245Z",
+      "updatedAt": "2026-05-07T11:11:00.674Z"
+    },
+    {
+      "name": "data_analysis",
+      "description": "Analyze data with statistical operations",
+      "category": "analysis",
+      "tags": [
+        "data",
+        "analysis",
+        "statistics"
+      ],
+      "parameters": [
+        {
+          "name": "data",
+          "type": "array",
+          "description": "Data array",
+          "required": true
+        },
+        {
+          "name": "operation",
+          "type": "enum",
+          "description": "Analysis operation",
+          "required": true,
+          "enumValues": [
+            "sum",
+            "mean",
+            "median",
+            "mode",
+            "std",
+            "min",
+            "max",
+            "count"
+          ]
+        }
+      ],
+      "returnType": {
+        "type": "number",
+        "description": "Analysis result"
+      },
+      "status": "available",
+      "version": "1.0.0",
+      "source": "builtin",
+      "permissions": [],
+      "examples": [
+        {
+          "description": "Calculate mean",
+          "parameters": {
+            "data": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "operation": "mean"
+          }
+        }
+      ],
+      "id": "tool-1778120816245-0je79i6vw",
+      "createdAt": "2026-05-07T02:26:56.245Z",
+      "updatedAt": "2026-05-07T11:11:00.674Z"
+    }
+  ]
+}

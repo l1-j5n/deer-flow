@@ -4,12 +4,18 @@ Provides:
 - ``GET /api/realtime/metrics`` — aggregate system metrics snapshot
 - ``GET /api/realtime/events`` — recent events from ring buffer
 - ``WebSocket /ws/realtime`` — live push of metrics + events every 2 s
+- ``POST /api/realtime/push`` — push message to all WebSocket clients (requires auth)
 
 The event detection engine now monitors:
 - Agent status transitions (busy→offline, offline→online, etc.)
 - Timing threshold breaches (from alerts module)
 - Channel connection state changes
 - Aggregate count deltas (agents, alerts, messages)
+
+Authentication:
+- Push endpoint requires ``X-API-Key`` header for authentication
+- API key configured via ``DEERFLOW_PUSH_API_KEY`` environment variable
+- Without authentication, push requests will return 401 Unauthorized
 
 The ring buffer persists to ``realtime_events.json`` in the agent base
 directory to survive Gateway restarts (up to 500 events on disk, 100 in
@@ -26,7 +32,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, Header, HTTPException, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel, Field
 
 from app.gateway.timing import get_timing_store
@@ -59,6 +65,61 @@ _prev_agent_statuses: dict[str, str] = {}      # agent_name → status
 _prev_alert_firing: set[str] = set()            # set of "agent::message" keys
 _prev_channel_connected = False
 _prev_health_score: float = 100.0
+
+# ── WebSocket federation push connections ───────────────────────────
+_ws_connections: set[WebSocket] = set()
+_ws_lock = asyncio.Lock()
+
+# ── API Key for push authentication ──────────────────────────────
+_push_api_key: str | None = os.environ.get("DEERFLOW_PUSH_API_KEY")
+
+
+def _validate_push_api_key(api_key: str | None) -> bool:
+    """Validate the API key for push operations.
+
+    Returns True if authentication succeeds, False otherwise.
+    If no API key is configured, authentication is bypassed (dev mode).
+    """
+    if _push_api_key is None:
+        # No API key configured - allow all requests (dev mode)
+        return True
+    if api_key is None:
+        return False
+    return api_key == _push_api_key
+
+
+# ── Rate limiting for push ─────────────────────────────────
+_push_rate_limit_max: int = int(os.environ.get("DEERFLOW_PUSH_RATE_LIMIT_MAX", "60"))  # Default 60/min
+_push_rate_window_seconds: int = 60  # 1 minute window
+_push_request_timestamps: list[float] = []  # Sliding window timestamps
+
+
+def _check_rate_limit() -> tuple[bool, int, int]:
+    """Check if request is within rate limit.
+
+    Returns (allowed, remaining, reset_seconds)
+    - allowed: True if request is allowed
+    - remaining: remaining requests in current window
+    - reset_seconds: seconds until window resets
+    """
+    now = time.time()
+    window_start = now - _push_rate_window_seconds
+
+    # Remove old timestamps outside the window
+    global _push_request_timestamps
+    _push_request_timestamps = [ts for ts in _push_request_timestamps if ts > window_start]
+
+    # Check if we're at the limit
+    if len(_push_request_timestamps) >= _push_rate_limit_max:
+        # Calculate reset time
+        oldest = min(_push_request_timestamps) if _push_request_timestamps else now
+        reset_seconds = int(oldest + _push_rate_window_seconds - now) + 1
+        return False, 0, max(1, reset_seconds)
+
+    # Add current timestamp
+    _push_request_timestamps.append(now)
+    remaining = _push_rate_limit_max - len(_push_request_timestamps)
+    return True, remaining, _push_rate_window_seconds
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -537,6 +598,10 @@ async def realtime_ws(websocket: WebSocket) -> None:
     await websocket.accept()
     logger.info("WebSocket realtime connected")
 
+    # Register connection for federation push
+    async with _ws_lock:
+        _ws_connections.add(websocket)
+
     try:
         while True:
             # ── Build & push metrics snapshot ────────────────────────
@@ -570,3 +635,104 @@ async def realtime_ws(websocket: WebSocket) -> None:
             await websocket.close()
         except Exception:
             pass
+    finally:
+        # Unregister connection
+        async with _ws_lock:
+            _ws_connections.discard(websocket)
+
+
+# ══════════════════════════════════════════════════════════════════════
+# Federation Push REST endpoints
+# ══════════════════════════════════════════════════════════════════════
+
+
+class PushMessageRequest(BaseModel):
+    """Request to push a message to all WebSocket clients.
+
+    Requires authentication via ``X-API-Key`` header.
+    """
+    type: str = "broadcast"
+    payload: dict[str, Any] = {}
+
+
+class PushResponse(BaseModel):
+    """Response from push operation."""
+    success: bool
+    delivered: int = 0
+    error: str | None = None
+
+
+@router.post("/push")
+async def push_to_websockets(
+    request: PushMessageRequest,
+    x_api_key: str | None = Header(None, description="API key for push authentication"),
+) -> PushResponse:
+    """Push a message to all connected WebSocket clients.
+
+    This endpoint enables federation push - sending real-time messages
+    from REST API to all connected WebSocket clients.
+
+    Authentication:
+    - Requires ``X-API-Key`` header with valid API key
+    - Set ``DEERFLOW_PUSH_API_KEY`` environment variable to configure key
+    - Without key configured, all requests are allowed (dev mode)
+
+    Rate Limiting:
+    - Default: 60 requests per minute
+    - Configure via ``DEERFLOW_PUSH_RATE_LIMIT_MAX`` environment variable
+    """
+    # Validate API key
+    if not _validate_push_api_key(x_api_key):
+        raise HTTPException(status_code=401, detail="Unauthorized: invalid or missing API key")
+
+    # Check rate limit
+    allowed, remaining, reset_seconds = _check_rate_limit()
+    if not allowed:
+        raise HTTPException(
+            status_code=429,
+            detail=f"Rate limit exceeded. Retry after {reset_seconds} seconds.",
+            headers={
+                "X-RateLimit-Limit": str(_push_rate_limit_max),
+                "X-RateLimit-Remaining": "0",
+                "X-RateLimit-Reset": str(reset_seconds),
+            },
+        )
+
+    async with _ws_lock:
+        connections = list(_ws_connections)
+
+    if not connections:
+        return PushResponse(success=True, delivered=0)
+
+    message = json.dumps({"type": request.type, "data": request.payload})
+    delivered = 0
+
+    for ws in connections:
+        try:
+            await ws.send_text(message)
+            delivered += 1
+        except Exception as e:
+            logger.warning(f"Failed to push to client: {e}")
+
+    return PushResponse(success=True, delivered=delivered)
+
+
+@router.get("/push/stats")
+async def get_push_stats(
+    x_api_key: str | None = Header(None, description="API key for push authentication"),
+) -> dict:
+    """Get WebSocket federation push statistics.
+
+    Requires authentication via ``X-API-Key`` header.
+    """
+    # Validate API key
+    if not _validate_push_api_key(x_api_key):
+        raise HTTPException(status_code=401, detail="Unauthorized: invalid or missing API key")
+
+    async with _ws_lock:
+        count = len(_ws_connections)
+
+    return {
+        "active_connections": count,
+        "max_connections": count,
+    }

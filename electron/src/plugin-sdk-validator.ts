@@ -101,6 +101,8 @@ const VALID_LICENSES = [
 
 export class PluginSDKValidator {
   private platformVersion: string;
+  private validationCount = 0;
+  private scaffoldCount = 0;
 
   constructor(platformVersion: string) {
     this.platformVersion = platformVersion;
@@ -289,6 +291,7 @@ export class PluginSDKValidator {
     }
 
     const valid = errors.length === 0;
+    if (valid) this.validationCount++;
 
     return {
       valid,
@@ -303,6 +306,7 @@ export class PluginSDKValidator {
 
   generateScaffold(manifest: PluginManifest, options: ScaffoldOptions): Record<string, string> {
     const files: Record<string, string> = {};
+    this.scaffoldCount++;
 
     switch (options.language) {
       case "typescript":
@@ -685,11 +689,15 @@ ${manifest.license}
     platformVersion: string;
     validPermissions: number;
     validHooks: number;
+    totalValidations: number;
+    totalScaffolds: number;
   } {
     return {
       platformVersion: this.platformVersion,
       validPermissions: VALID_PERMISSIONS.length,
       validHooks: VALID_HOOKS.length,
+      totalValidations: this.validationCount,
+      totalScaffolds: this.scaffoldCount,
     };
   }
 }

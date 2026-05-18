@@ -143,6 +143,8 @@ export class SessionExportService extends EventEmitter {
   private projectRoot: string;
   private exportsDir: string;
   private templates: Map<string, ExportTemplate> = new Map();
+  private exportCount = 0;
+  private totalSize = 0;
 
   constructor(projectRoot: string) {
     super();
@@ -222,6 +224,9 @@ export class SessionExportService extends EventEmitter {
       }
 
       this.emit("session-exported", { sessionId: session.id, format: options.format, filePath });
+      this.exportCount++;
+      const stats = fs.statSync(filePath);
+      this.totalSize += stats.size;
 
       return {
         success: true,
@@ -568,5 +573,24 @@ export class SessionExportService extends EventEmitter {
     } catch {
       return false;
     }
+  }
+
+  // ---- Stats ----
+
+  getStats(): {
+    totalExports: number;
+    totalSize: number;
+    templatesLoaded: number;
+  } {
+    return {
+      totalExports: this.exportCount,
+      totalSize: this.totalSize,
+      templatesLoaded: this.templates.size,
+    };
+  }
+
+  dispose(): void {
+    this.templates.clear();
+    this.emit("disposed");
   }
 }

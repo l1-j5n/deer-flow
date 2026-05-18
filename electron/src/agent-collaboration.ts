@@ -80,6 +80,8 @@ export interface CollaborationSession {
     totalMessages: number;
     totalTasks: number;
     completedTasks: number;
+    pendingTasks: number;
+    failedTasks: number;
     conflictCount: number;
     consensusCount: number;
   };
@@ -166,6 +168,8 @@ export class AgentCollaborationHub extends EventEmitter {
         totalMessages: 0,
         totalTasks: 0,
         completedTasks: 0,
+        pendingTasks: 0,
+        failedTasks: 0,
         conflictCount: 0,
         consensusCount: 0,
       },
@@ -413,6 +417,9 @@ export class AgentCollaborationHub extends EventEmitter {
 
         // Unblock dependent tasks
         this.unblockDependentTasks(session, taskId);
+      }
+      if (updates.status === "failed") {
+        session.metadata.failedTasks++;
       }
     }
 
@@ -671,6 +678,9 @@ export class AgentCollaborationHub extends EventEmitter {
     totalCollaborators: number;
     totalTasks: number;
     completedTasks: number;
+    activeTasks: number;
+    pendingTasks: number;
+    failedTasks: number;
     byRole: Record<string, number>;
     averageConsensusRate: number;
   } {
@@ -700,6 +710,9 @@ export class AgentCollaborationHub extends EventEmitter {
       totalCollaborators,
       totalTasks,
       completedTasks,
+      activeTasks: sessions.filter((s) => s.status === "active").reduce((sum, s) => sum + s.metadata.totalTasks - s.metadata.completedTasks - s.metadata.failedTasks, 0),
+      pendingTasks: sessions.filter((s) => s.status !== "completed" && s.status !== "failed").reduce((sum, s) => sum + s.metadata.totalTasks - s.metadata.completedTasks - s.metadata.failedTasks, 0),
+      failedTasks: sessions.reduce((sum, s) => sum + s.metadata.failedTasks, 0),
       byRole,
       averageConsensusRate: decided > 0 ? approved / decided : 0,
     };

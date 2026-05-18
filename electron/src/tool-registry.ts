@@ -757,10 +757,12 @@ export class ToolRegistry extends EventEmitter {
     bySource: Record<string, number>;
     byStatus: Record<string, number>;
     totalUsageRecords: number;
+    topTools: { toolId: string; count: number }[];
   } {
     const byCategory: Record<string, number> = {};
     const bySource: Record<string, number> = {};
     const byStatus: Record<string, number> = {};
+    const toolUsageCount: Record<string, number> = {};
 
     for (const tool of this.tools.values()) {
       byCategory[tool.category] = (byCategory[tool.category] || 0) + 1;
@@ -768,12 +770,22 @@ export class ToolRegistry extends EventEmitter {
       byStatus[tool.status] = (byStatus[tool.status] || 0) + 1;
     }
 
+    for (const u of this.usage) {
+      toolUsageCount[u.toolId] = (toolUsageCount[u.toolId] || 0) + 1;
+    }
+
+    const topTools = Object.entries(toolUsageCount)
+      .map(([toolId, count]) => ({ toolId, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10);
+
     return {
       totalTools: this.tools.size,
       byCategory,
       bySource,
       byStatus,
       totalUsageRecords: this.usage.length,
+      topTools,
     };
   }
 

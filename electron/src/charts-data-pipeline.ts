@@ -109,6 +109,9 @@ export class ChartsDataPipeline extends EventEmitter {
   // Cache for computed data
   private cache: Map<string, { data: any; timestamp: number }> = new Map();
   private cacheTTL = 30000; // 30 seconds
+  private cacheHits = 0;
+  private cacheMisses = 0;
+  private totalRequests = 0;
 
   constructor() {
     super();
@@ -159,10 +162,13 @@ export class ChartsDataPipeline extends EventEmitter {
   // ============================================================
 
   private getCached<T>(key: string): T | undefined {
+    this.totalRequests++;
     const entry = this.cache.get(key);
     if (entry && Date.now() - entry.timestamp < this.cacheTTL) {
+      this.cacheHits++;
       return entry.data as T;
     }
+    this.cacheMisses++;
     return undefined;
   }
 
@@ -681,5 +687,25 @@ export class ChartsDataPipeline extends EventEmitter {
       value: Math.floor(Math.random() * 100) + 20,
       color: colors[i % colors.length],
     }));
+  }
+
+  // ---- Stats ----
+
+  getStats(): {
+    cacheHits: number;
+    cacheMisses: number;
+    totalRequests: number;
+  } {
+    return {
+      cacheHits: this.cacheHits,
+      cacheMisses: this.cacheMisses,
+      totalRequests: this.totalRequests,
+    };
+  }
+
+  // ---- Aliases for compatibility ----
+
+  getHealthHistory(days: number = 7): TimeSeriesPoint[] {
+    return this.getHealthScoreHistory(days);
   }
 }

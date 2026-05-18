@@ -1,0 +1,21 @@
+{
+  "name": "Test Workflow",
+  "entryNode": "start",
+  "nodes": [
+    {
+      "id": "start",
+      "type": "input",
+      "name": "Start",
+      "config": {}
+    },
+    {
+      "id": "end",
+      "type": "output",
+      "name": "End",
+      "config": {}
+    }
+  ],
+  "id": "wf_1778147929955_d0rshh",
+  "version": 1,
+  "createdAt": "2026-05-07T09:58:49.955Z"
+}

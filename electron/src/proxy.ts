@@ -110,6 +110,7 @@ export class ProxyServer {
       urlPath.startsWith("/api/agents") ||
       urlPath.match(/^\/api\/threads/) ||
       urlPath.startsWith("/api/suggestions") ||
+      urlPath.startsWith("/api/electron") ||
       urlPath.startsWith("/health")
     ) {
       this.proxyRequest(req, res, this.config.gatewayPort, urlPath);

@@ -314,6 +314,13 @@ export class PluginManager extends EventEmitter {
   }
 
   /**
+   * Get all plugins (alias for listPlugins)
+   */
+  getAllPlugins(): Plugin[] {
+    return this.listPlugins();
+  }
+
+  /**
    * List all plugins
    */
   listPlugins(filter?: { status?: PluginStatus }): Plugin[] {

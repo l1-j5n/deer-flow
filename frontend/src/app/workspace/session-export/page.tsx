@@ -21,6 +21,7 @@ import {
   FileCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getTemplates, listExports, exportSession, deleteExport } from "@/core/session-export";
 
 // ============================================================
 // Types
@@ -157,15 +158,13 @@ export default function SessionExportPage() {
   const [success, setSuccess] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"export" | "history">("export");
 
-  const isElectron = typeof window !== "undefined" && (window as any).electronAPI;
+  const isLoading = loading || exporting;
 
   // Fetch templates and export history
   const fetchData = useCallback(async () => {
-    if (!isElectron) return;
     setLoading(true);
     try {
-      const api = (window as any).electronAPI.sessionExport;
-      const [tpls, exps] = await Promise.all([api.getTemplates(), api.listExports()]);
+      const [tpls, exps] = await Promise.all([getTemplates(), listExports()]);
       setTemplates(tpls || []);
       setExports(exps || []);
     } catch (err: any) {
@@ -173,37 +172,19 @@ export default function SessionExportPage() {
     } finally {
       setLoading(false);
     }
-  }, [isElectron]);
+  }, []);
 
   useEffect(() => {
-    if (isElectron) fetchData();
-    else {
-      // Mock data for browser preview
-      setTemplates([
-        { id: "default", name: "Default", description: "Standard export with all content", icon: "file" },
-        { id: "minimal", name: "Minimal", description: "Messages only, no metadata", icon: "file" },
-        { id: "detailed", name: "Detailed", description: "Full content with tool calls and reasoning", icon: "file" },
-        { id: "shareable", name: "Shareable", description: "Clean format for sharing", icon: "file" },
-      ]);
-      setExports([
-        { fileName: "session_2024-01-15.json", format: "json", timestamp: "2024-01-15T10:30:00Z", size: 24580, sessionCount: 1 },
-        { fileName: "batch_export_2024-01-14.zip", format: "zip", timestamp: "2024-01-14T16:45:00Z", size: 156000, sessionCount: 5 },
-      ]);
-    }
-  }, [isElectron, fetchData]);
+    fetchData();
+  }, [fetchData]);
 
   const handleExport = async () => {
-    if (!isElectron) {
-      setError("Export requires Electron environment");
-      return;
-    }
     setExporting(true);
     setError(null);
     setSuccess(null);
     try {
-      const api = (window as any).electronAPI.sessionExport;
       // For demo, export a mock session
-      const result = await api.export("demo-session", options);
+      const result = await exportSession("demo-session", options as any);
       if (result.success) {
         setSuccess(`Exported to ${result.filePath}`);
         fetchData();
@@ -218,10 +199,8 @@ export default function SessionExportPage() {
   };
 
   const handleDeleteExport = async (fileName: string) => {
-    if (!isElectron) return;
     try {
-      const api = (window as any).electronAPI.sessionExport;
-      await api.deleteExport(fileName);
+      await deleteExport(fileName);
       fetchData();
     } catch (err: any) {
       setError(err.message || "Failed to delete export");
